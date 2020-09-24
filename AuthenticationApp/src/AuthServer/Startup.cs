@@ -15,16 +15,15 @@ namespace AuthServer
         {
             Configuration = configuration;
         }
-
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSameSiteCookiePolicy();
             services.AddInfrastructure(Configuration);
-            services.AddMvc()
-                .AddNewtonsoftJson();
+
+            services.AddControllers();
+            services.AddRazorPages();
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCookiePolicy();
@@ -46,9 +45,8 @@ namespace AuthServer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-                endpoints.MapFallbackToPage("/Index");
-                //endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
             });
 
         }
