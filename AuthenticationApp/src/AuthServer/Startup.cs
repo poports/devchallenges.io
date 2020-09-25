@@ -1,4 +1,6 @@
 using AuthServer.Infrastructure;
+using AuthServer.Infrastructure.Common.Interfaces;
+using AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +21,8 @@ namespace AuthServer
         {
             services.AddSameSiteCookiePolicy();
             services.AddInfrastructure(Configuration);
-
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddRazorPages();
         }

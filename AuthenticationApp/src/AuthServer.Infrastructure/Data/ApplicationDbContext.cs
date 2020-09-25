@@ -1,21 +1,59 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using AuthServer.Infrastructure.Common.Interfaces;
+using AuthServer.Infrastructure.Identity;
+using IdentityServer4.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using static AuthServer.Infrastructure.Common.DomainEvent;
 
 namespace AuthServer.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IDomainEventService _domainEventService;
+
+        public ApplicationDbContext(
+            DbContextOptions options,
+            IOptions<OperationalStoreOptions> operationalStoreOptions,
+            ICurrentUserService currentUserService,
+            IDomainEventService domainEventService) : base(options, operationalStoreOptions)
         {
+            _currentUserService = currentUserService;
+            _domainEventService = domainEventService;
+        }
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+
+            int result = await base.SaveChangesAsync(cancellationToken);
+
+            await DispatchEvents(cancellationToken);
+
+            return result;
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-            //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/customize-identity-model?view=aspnetcore-3.0
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            base.OnModelCreating(builder);
+        }
+
+        private async Task DispatchEvents(CancellationToken cancellationToken)
+        {
+            var domainEventEntities = ChangeTracker.Entries<IHasDomainEvent>()
+                .Select(x => x.Entity.DomainEvents)
+                .SelectMany(x => x)
+                .ToArray();
+
+            foreach (var domainEvent in domainEventEntities)
+            {
+                await _domainEventService.Publish(domainEvent);
+            }
         }
     }
 }

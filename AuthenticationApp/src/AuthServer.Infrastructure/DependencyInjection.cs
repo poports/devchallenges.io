@@ -1,10 +1,15 @@
-﻿using AuthServer.Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
+﻿using AuthServer.Infrastructure.Common.Interfaces;
+using AuthServer.Infrastructure.Data;
+using AuthServer.Infrastructure.Identity;
+using AuthServer.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using System.Reflection;
+using MediatR;
+using AutoMapper;
 
 namespace AuthServer.Infrastructure
 {
@@ -17,14 +22,23 @@ namespace AuthServer.Infrastructure
                     .ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
                     .UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentityServer()
-                .AddInMemoryIdentityResources(Config.Ids)
-                .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryClients(Config.Clients)
-                .AddDeveloperSigningCredential();  // not recommended for production - you need to store your key material somewhere secure 
+            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddScoped<IDomainEventService, DomainEventService>();
+
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+            services.AddTransient<IIdentityService, IdentityService>();
+
+            services.AddAuthentication()
+               .AddIdentityServerJwt();
+
 
             return services;
         }
