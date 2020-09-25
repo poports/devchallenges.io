@@ -23,6 +23,13 @@ namespace AuthServer.Infrastructure.Identity
 
             return user.UserName;
         }
+        public async Task<ApplicationUser> GetUserAsync(string userId)
+        {
+            var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
+
+            return user;
+        }
+
         public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
         {
             var user = new ApplicationUser

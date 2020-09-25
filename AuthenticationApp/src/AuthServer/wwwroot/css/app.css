@@ -489,6 +489,10 @@ input:invalid {
     height: 100vh;
 }
 
+.text-xs {
+    font-size: 0.75rem;
+}
+
 .text-sm {
     font-size: 0.875rem;
 }
@@ -628,6 +632,12 @@ input:invalid {
     --text-opacity: 1;
     color: #1a202c;
     color: rgba(26, 32, 44, var(--text-opacity));
+}
+
+.text-red-500 {
+    --text-opacity: 1;
+    color: #f56565;
+    color: rgba(245, 101, 101, var(--text-opacity));
 }
 
 .text-blue-500 {

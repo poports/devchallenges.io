@@ -1,4 +1,5 @@
 ﻿using AuthServer.Infrastructure.Common.Models;
+using AuthServer.Infrastructure.Identity;
 using System.Threading.Tasks;
 
 namespace AuthServer.Infrastructure.Common.Interfaces
@@ -7,6 +8,7 @@ namespace AuthServer.Infrastructure.Common.Interfaces
     {
         Task<string> GetUserNameAsync(string userId);
 
+        Task<ApplicationUser> GetUserAsync(string userId);
         Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
 
         Task<Result> DeleteUserAsync(string userId);

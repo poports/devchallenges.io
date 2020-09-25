@@ -1,9 +1,10 @@
 ﻿@page
 @model AuthServer.Pages.Account.RegisterModel
 @{
+    ViewData["Title"] = "Register";
 }
 
-<div class="z-20 mx-0 sm:w-128 sm:mx-auto sm:mt-16 sm:bg-white text-gray-900 sm:shadow-lg h-screen sm:h-full sm:rounded-lg justify-center">
+<div class="z-20 mx-0 sm:w-128 sm:mx-auto sm:mt-16 sm:bg-white text-gray-700 sm:shadow-lg h-screen sm:h-full sm:rounded-lg justify-center">
     <!-- MainContainer -->
     <div class="p-12">
         <img class="h-5" src="~/images/devchallenges.svg" alt="Logo" />
@@ -13,23 +14,25 @@
             <p class="text-base pr-4 mt-4">Master web development by making real-life projects. There are multiple paths for you to choose</p>
             <!-- FormContainer -->
             <div class="w-full flex-1 mt-8">
-                <form class="mx-auto">
+                <form class="mx-auto" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <span class="flex items-center px-3 rounded-lg h-12 border focus-within:border-blue-400">
                         <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                             <path d="M0 0h24v24H0z" fill="none" />
                             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                         </svg>
-                        <input class="placeholder-gray-500 p-2 w-full focus:outline-none bg-transparent" type="email" placeholder="Email" required />
+                        <input asp-for="Input.Email" class="placeholder-gray-500 p-2 w-full focus:outline-none bg-transparent" placeholder="Email" required />
                     </span>
-
+                    <span asp-validation-for="Input.Email" class="text-red-500 font-light text-xs"></span>
                     <span class="flex items-center px-3 rounded-lg h-12 border focus-within:border-blue-400 mt-2">
                         <svg class="fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                             <path d="M0 0h24v24H0z" fill="none" />
                             <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
                         </svg>
-                        <input class="placeholder-gray-500 p-2 w-full focus:outline-none bg-transparent" type="password" placeholder="Password" required />
+                        <input asp-for="Input.Password" class="placeholder-gray-500 p-2 w-full focus:outline-none bg-transparent" type="password" placeholder="Password" required />
                     </span>
+                    <span asp-validation-for="Input.Password" class="text-red-500 font-light text-xs"></span>
 
+                    <div asp-validation-summary="ModelOnly" class="text-red-500 font-light text-xs"></div>
                     <button class="mt-5 tracking-wide font-semibold bg-blue-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                             type="submit">
                         Start coding now

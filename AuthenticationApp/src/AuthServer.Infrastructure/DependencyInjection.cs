@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using MediatR;
-using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace AuthServer.Infrastructure
 {
@@ -38,6 +38,16 @@ namespace AuthServer.Infrastructure
 
             services.AddAuthentication()
                .AddIdentityServerJwt();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                //demo
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
 
 
             return services;
