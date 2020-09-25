@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AuthServer.Pages
+namespace AuthServer.Pages.Account
 {
-    public class IndexModel : PageModel
+    public class RegisterModel : PageModel
     {
         public void OnGet()
         {
