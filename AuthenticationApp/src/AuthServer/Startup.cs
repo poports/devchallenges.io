@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+
 
 namespace AuthServer
 {
@@ -31,6 +33,11 @@ namespace AuthServer
                 options.LogoutPath = "/Account/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "Frontend/build";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,14 +55,22 @@ namespace AuthServer
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
             app.UseRouting();
-
             app.UseIdentityServer();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
+            });
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "Frontend";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
 
         }
