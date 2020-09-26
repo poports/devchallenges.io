@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +20,7 @@ namespace AuthServer.Pages.Account
         public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager)
         {
             _identityService = identityService;
-            _signInManager = signInManager;
+            _signInManager = signInManager; 
         }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -29,7 +28,7 @@ namespace AuthServer.Pages.Account
         public string ReturnUrl { get; set; }
 
         [BindProperty]
-        public RegisterInputModel Input { get; set; }
+        public AccountInputModel Input { get; set; }
 
         public async Task OnGet(string returnUrl = null)
         {
