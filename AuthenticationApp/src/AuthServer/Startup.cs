@@ -25,6 +25,12 @@ namespace AuthServer
             services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddRazorPages();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

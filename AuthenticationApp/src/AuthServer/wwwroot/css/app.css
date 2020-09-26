@@ -606,6 +606,10 @@ input:invalid {
     fill: currentColor;
 }
 
+.text-left {
+    text-align: left;
+}
+
 .text-center {
     text-align: center;
 }
