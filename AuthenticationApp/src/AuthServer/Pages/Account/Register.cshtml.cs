@@ -15,8 +15,8 @@ namespace AuthServer.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        IIdentityService _identityService;
-        SignInManager<ApplicationUser> _signInManager;
+        private readonly IIdentityService _identityService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager)
         {
             _identityService = identityService;
@@ -43,14 +43,14 @@ namespace AuthServer.Pages.Account
             if (ModelState.IsValid)
             {
                 
-                var action = await _identityService.CreateUserAsync(Input.Email, Input.Password);
-                if (action.Result.Succeeded) {
-                    var user = await _identityService.GetUserAsync(action.UserId);
+                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password);
+                if (Result.Succeeded) {
+                    var user = await _identityService.GetUserAsync(UserId);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
 
-                foreach (var error in action.Result.Errors)
+                foreach (var error in Result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }

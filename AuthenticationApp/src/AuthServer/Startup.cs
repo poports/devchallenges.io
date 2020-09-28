@@ -3,11 +3,10 @@ using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-
 
 namespace AuthServer
 {
@@ -21,23 +20,23 @@ namespace AuthServer
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSameSiteCookiePolicy();
+           
             services.AddInfrastructure(Configuration);
+
+
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddRazorPages();
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/Account/Login";
-                options.LogoutPath = "/Account/Logout";
-                options.AccessDeniedPath = "/Account/AccessDenied";
-            });
+
+            services.AddSameSiteCookiePolicy();
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "Frontend/build";
             });
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,7 +56,10 @@ namespace AuthServer
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseRouting();
+
             app.UseIdentityServer();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

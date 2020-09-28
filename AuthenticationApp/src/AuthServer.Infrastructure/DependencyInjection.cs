@@ -2,14 +2,14 @@
 using AuthServer.Infrastructure.Data;
 using AuthServer.Infrastructure.Identity;
 using AuthServer.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace AuthServer.Infrastructure
 {
@@ -22,8 +22,8 @@ namespace AuthServer.Infrastructure
                     .ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
                     .UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddScoped<IDomainEventService, DomainEventService>();
@@ -32,12 +32,17 @@ namespace AuthServer.Infrastructure
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryClients(Config.Clients)
+                .AddDeveloperSigningCredential();
+
+
 
             services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddAuthentication()
-               .AddIdentityServerJwt();
+                .AddLocalApi();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -49,6 +54,12 @@ namespace AuthServer.Infrastructure
                 options.Password.RequireUppercase = false;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             return services;
         }

@@ -12,5 +12,7 @@ namespace AuthServer.Infrastructure.Common.Interfaces
         Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
 
         Task<Result> DeleteUserAsync(string userId);
+
+        Task<Result> DeleteUserAsync(ApplicationUser user);
     }
 }

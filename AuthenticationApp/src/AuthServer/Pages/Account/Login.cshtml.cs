@@ -16,12 +16,10 @@ namespace AuthServer.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        IIdentityService _identityService;
-        SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        public LoginModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
         {
-            _identityService = identityService;
             _signInManager = signInManager;
             _logger = logger;
         }
