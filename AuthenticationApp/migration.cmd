@@ -1,2 +1,0 @@
-dotnet ef migrations add "Inital" --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj --output-dir Data/Migrations
-dotnet ef database update --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj

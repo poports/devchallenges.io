@@ -1,5 +1,7 @@
 ﻿using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Infrastructure.Identity;
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.EntityFramework.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -16,7 +18,7 @@ namespace AuthServer.Infrastructure.Data
         private readonly IDomainEventService _domainEventService;
 
         public ApplicationDbContext(
-            DbContextOptions options,
+            DbContextOptions<ApplicationDbContext> options,
             ICurrentUserService currentUserService,
             IDomainEventService domainEventService) : base(options)
         {
@@ -25,7 +27,6 @@ namespace AuthServer.Infrastructure.Data
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-
             int result = await base.SaveChangesAsync(cancellationToken);
 
             await DispatchEvents(cancellationToken);
@@ -36,7 +37,6 @@ namespace AuthServer.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
             base.OnModelCreating(builder);
         }
 

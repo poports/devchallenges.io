@@ -1,0 +1,3 @@
+dotnet ef database update --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj --context ApplicationDbContext
+dotnet ef database update --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj --context PersistedGrantDbContext
+dotnet ef database update --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj --context "ConfigurationDbContext" 

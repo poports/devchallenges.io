@@ -20,15 +20,12 @@ namespace AuthServer
         }
         public void ConfigureServices(IServiceCollection services)
         {
-           
             services.AddInfrastructure(Configuration);
-
 
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
             services.AddControllers();
             services.AddRazorPages();
-
             services.AddSameSiteCookiePolicy();
 
             // In production, the React files will be served from this directory
@@ -41,6 +38,7 @@ namespace AuthServer
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.InitializeDatabase();
             app.UseCookiePolicy();
 
             if (env.IsDevelopment())
