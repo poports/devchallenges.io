@@ -1,3 +1,4 @@
+using AuthServer.Filters;
 using AuthServer.Infrastructure;
 using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Services;
@@ -21,7 +22,7 @@ namespace AuthServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add(new ApiExceptionFilterAttribute()));
             services.AddRazorPages();
 
             services.AddSingleton<ICurrentUserService, CurrentUserService>();

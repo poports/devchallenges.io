@@ -41,7 +41,8 @@ namespace AuthServer.Infrastructure.Data.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Bio = table.Column<string>(nullable: true),
-                    Photo = table.Column<string>(nullable: true)
+                    FullName = table.Column<string>(nullable: true),
+                    Photo = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
