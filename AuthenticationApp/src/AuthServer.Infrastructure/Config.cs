@@ -20,6 +20,15 @@ namespace AuthServer.Infrastructure
             {
                 new ApiScope("api.read", "AuthenticationApp")
             };
+        // public static IEnumerable<ApiResource> ApiResources =>
+        //     new List<ApiResource>
+        //     {
+        //         new ApiResource("api.read", "Demo API")
+        //         {
+        //             ApiSecrets = { new Secret("secret".Sha256()) },
+        //             Scopes = { "api.read" }
+        //         }
+        //     };
 
         public static IEnumerable<Client> Clients =>
             new List<Client>

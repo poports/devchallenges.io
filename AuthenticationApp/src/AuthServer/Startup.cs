@@ -21,11 +21,11 @@ namespace AuthServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
+            services.AddControllers();
+            services.AddRazorPages();
 
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
-            services.AddControllers();
-            services.AddRazorPages();
             services.AddSameSiteCookiePolicy();
 
             // In production, the React files will be served from this directory
@@ -58,11 +58,14 @@ namespace AuthServer
             app.UseIdentityServer();
             app.UseAuthorization();
 
+            app.UseCors("api.read");
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
+                endpoints.MapDefaultControllerRoute();
             });
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "Frontend";
@@ -72,6 +75,8 @@ namespace AuthServer
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            
+
 
         }
     }

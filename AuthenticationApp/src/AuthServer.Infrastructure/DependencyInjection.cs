@@ -40,18 +40,33 @@ namespace AuthServer.Infrastructure
                 .AddDefaultTokenProviders(); ;
 
             services.AddIdentityServer()
-              .AddConfigurationStore(options =>
-              {
-                  options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
-              })
-            .AddOperationalStore(options =>
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
+                    //this part is optional
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 300; // interval in seconds
+                })
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddDeveloperSigningCredential();
+
+            services.AddAuthentication()
+                .AddLocalApi(options =>
+                {
+                    options.ExpectedScope = "api.read";
+                });
+
+            services.AddCors(options =>
             {
-                options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
-                // options.EnableTokenCleanup = true;
-                // options.TokenCleanupInterval = 30; // interval in seconds
-            })
-            .AddAspNetIdentity<ApplicationUser>()
-            .AddDeveloperSigningCredential();
+                options.AddPolicy("api.read", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.Configure<IdentityOptions>(options =>
@@ -62,13 +77,14 @@ namespace AuthServer.Infrastructure
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             });
-
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/Login";
                 options.LogoutPath = "/Account/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
+
+
 
             return services;
         }
