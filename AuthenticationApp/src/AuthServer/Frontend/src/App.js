@@ -8,18 +8,27 @@ import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizat
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants'
 import { Navigation } from './components'
 
+export const UserContext = React.createContext()
+
+const userContext = {
+  isAuthenticated: false,
+  userPhoto: null
+}
+
 export default () => {
   return (
-    <Theme>
-      <Navigation />
-      <Switch>
-        <AuthorizeRoute exact path="/profile" component={Profile} />
-        <Route
-          path={ApplicationPaths.ApiAuthorizationPrefix}
-          component={ApiAuthorizationRoutes}
-        />
-        <Route exact path="/" component={Profile} />
-      </Switch>
-    </Theme>
+    <UserContext.Provider value={userContext}>
+      <Theme>
+        <Navigation />
+        <Switch>
+          <AuthorizeRoute exact path="/profile" component={Profile} />
+          <Route
+            path={ApplicationPaths.ApiAuthorizationPrefix}
+            component={ApiAuthorizationRoutes}
+          />
+          <Route exact path="/" component={Profile} />
+        </Switch>
+      </Theme>
+    </UserContext.Provider>
   )
 }

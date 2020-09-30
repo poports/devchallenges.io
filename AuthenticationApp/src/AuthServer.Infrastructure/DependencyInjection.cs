@@ -91,11 +91,11 @@ namespace AuthServer.Infrastructure
         public static IApplicationBuilder InitializeDatabase(this IApplicationBuilder app)
         {
             //https://github.com/IdentityServer/IdentityServer4/issues/4535
-            app.Use(async (ctx, next) =>
-            {
-                ctx.SetIdentityServerOrigin("https://rc-auth-app.herokuapp.com/");
-                await next();
-            });
+            // app.Use(async (ctx, next) =>
+            // {
+            //     ctx.SetIdentityServerOrigin("https://rc-auth-app.herokuapp.com/");
+            //     await next();
+            // });
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
