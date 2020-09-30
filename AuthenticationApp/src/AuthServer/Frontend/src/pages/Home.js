@@ -1,10 +1,12 @@
 import React from 'react'
+import { Footer, WelcomeCard } from './../components'
 
 const Home = () => {
   return (
-    <div>
-      <span>Home</span>
-    </div>
+    <>
+      <WelcomeCard />
+      <Footer />
+    </>
   )
 }
 

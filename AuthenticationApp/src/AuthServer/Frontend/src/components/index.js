@@ -1,2 +1,6 @@
 export { default as GlobalStyle } from './GlobalStyle'
 export { default as Theme } from './Theme'
+export { default as Navigation } from './Navigation'
+export { default as WelcomeCard } from './WelcomeCard'
+export { default as ProfileCard } from './ProfileCard'
+export { default as Footer } from './Footer'

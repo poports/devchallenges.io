@@ -6,17 +6,19 @@ import Profile from './pages/Profile'
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute'
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes'
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants'
+import { Navigation } from './components'
 
 export default () => {
   return (
     <Theme>
+      <Navigation />
       <Switch>
         <AuthorizeRoute exact path="/profile" component={Profile} />
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
         />
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Profile} />
       </Switch>
     </Theme>
   )

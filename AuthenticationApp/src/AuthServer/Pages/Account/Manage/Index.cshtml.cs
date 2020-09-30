@@ -59,8 +59,8 @@ namespace AuthServer.Pages.Account.Manage
             var claims = await _userManager.GetClaimsAsync(user);
             //TODO: refactor this later
             await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase)), new Claim ("phone", Input.PhoneNumber));
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)), new Claim("name", Input.PhoneNumber));
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase)), new Claim("bio", Input.PhoneNumber));
+            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)), new Claim("name", Input.FullName));
+            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase)), new Claim("bio", Input.Bio));
 
             await _signInManager.RefreshSignInAsync(user);
 

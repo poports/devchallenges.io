@@ -1,10 +1,13 @@
 import React from 'react'
+import { ProfileCard, Footer } from './../components'
 
 const Profile = () => {
   return (
-    <div>
-      <span>Pofile</span>
-    </div>
+    <>
+      <ProfileCard />
+      <Footer />
+    </>
   )
 }
+
 export default Profile

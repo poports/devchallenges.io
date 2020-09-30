@@ -3,6 +3,7 @@ using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +34,7 @@ namespace AuthServer
             {
                 configuration.RootPath = "Frontend/build";
             });
-            
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,15 +51,18 @@ namespace AuthServer
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+
+            app.UseRouting();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            app.UseRouting();
+
+            app.UseCors("api.read");
+            //app.UseHttpsRedirection();
 
             app.UseIdentityServer();
             app.UseAuthorization();
 
-            app.UseCors("api.read");
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -75,7 +79,7 @@ namespace AuthServer
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            
+
 
 
         }

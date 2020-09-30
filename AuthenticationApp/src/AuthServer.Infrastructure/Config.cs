@@ -14,7 +14,6 @@ namespace AuthServer.Infrastructure
                 new IdentityResources.Profile(),
             };
 
-
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
@@ -42,17 +41,17 @@ namespace AuthServer.Infrastructure
                         AllowedGrantTypes = GrantTypes.Code,
                         RequireClientSecret = false,
                         RedirectUris = {
-                                            $"{Environment.GetEnvironmentVariable("OIDC_CLIENT_URI")}/authentication/login-callback",
+                                            "https://rc-auth-app.herokuapp.com/authentication/login-callback",
                                             "https://localhost:44343/authentication/login-callback",
                                             "https://localhost:5001/authentication/login-callback"
                                         },
                         PostLogoutRedirectUris = {
-                                            $"{Environment.GetEnvironmentVariable("OIDC_CLIENT_URI")}/authentication/logout-callback",
+                                            "https://rc-auth-app.herokuapp.com/authentication/logout-callback",
                                             "https://localhost:44343/authentication/logout-callback",
                                             "https://localhost:5001/authentication/logout-callback"
                                         },
                         AllowedCorsOrigins = {
-                                            $"{Environment.GetEnvironmentVariable("OIDC_CLIENT_URI")}",
+                                            "https://rc-auth-app.herokuapp.com",
                                             "https://localhost:44343",
                                             "https://localhost:5001"
                                         },

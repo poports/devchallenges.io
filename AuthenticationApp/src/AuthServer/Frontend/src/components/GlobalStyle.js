@@ -4,6 +4,6 @@ import './../style.css'
 
 export default createGlobalStyle`
   body {
-    ${tw`font-sans bg-gradient-to-br from-gray-100 to-gray-400 m-0`}
+    ${tw`font-sans bg-gray-100 text-gray-900 m-0 tracking-wide leading-normal`}
   }
 `
