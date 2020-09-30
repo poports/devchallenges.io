@@ -39,20 +39,6 @@
   <ItemGroup>
     <None Remove="Frontend\.env" />
     <None Remove="Frontend\.env.production.local" />
-    <None Remove="Frontend\build\asset-manifest.json" />
-    <None Remove="Frontend\build\devchallenges.png" />
-    <None Remove="Frontend\build\index.html" />
-    <None Remove="Frontend\build\precache-manifest.1231f021a537d6d052a772a570208053.js" />
-    <None Remove="Frontend\build\service-worker.js" />
-    <None Remove="Frontend\build\static\css\main.1da4d105.chunk.css" />
-    <None Remove="Frontend\build\static\css\main.1da4d105.chunk.css.map" />
-    <None Remove="Frontend\build\static\js\2.b5299707.chunk.js" />
-    <None Remove="Frontend\build\static\js\2.b5299707.chunk.js.LICENSE.txt" />
-    <None Remove="Frontend\build\static\js\2.b5299707.chunk.js.map" />
-    <None Remove="Frontend\build\static\js\main.a1e36ad8.chunk.js" />
-    <None Remove="Frontend\build\static\js\main.a1e36ad8.chunk.js.map" />
-    <None Remove="Frontend\build\static\js\runtime-main.6a142501.js" />
-    <None Remove="Frontend\build\static\js\runtime-main.6a142501.js.map" />
     <None Remove="tempkey.jwk" />
   </ItemGroup>
 

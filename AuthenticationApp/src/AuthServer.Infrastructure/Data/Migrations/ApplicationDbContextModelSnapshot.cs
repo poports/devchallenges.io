@@ -24,9 +24,6 @@ namespace AuthServer.Infrastructure.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Bio")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -37,9 +34,6 @@ namespace AuthServer.Infrastructure.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -63,9 +57,6 @@ namespace AuthServer.Infrastructure.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
-
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("BLOB");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");

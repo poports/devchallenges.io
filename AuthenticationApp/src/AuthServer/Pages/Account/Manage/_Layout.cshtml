@@ -1,13 +1,14 @@
 ﻿<!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/dotnet/css/app.css" />
 </head>
-<body>
-    <div>
-        <h2>Layout</h2>
+<body class="font-sans bg-gray-100 text-gray-900 m-0 tracking-wide leading-normal">
+    <!-- Container -->
+    <div class="container w-full justify-center flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-16">
         @RenderBody()
     </div>
 </body>

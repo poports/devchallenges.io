@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AuthServer.Pages.Account
@@ -42,8 +43,16 @@ namespace AuthServer.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                
-                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password);
+                var claims = new List<Claim>() {
+                    new Claim("username", Input.Email),
+                    new Claim("name", string.Empty),
+                    new Claim("email", Input.Email),
+                    new Claim("bio", string.Empty),
+                    new Claim("phone", string.Empty)
+                };
+
+                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password, claims);
+
                 if (Result.Succeeded) {
                     var user = await _identityService.GetUserAsync(UserId);
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -54,8 +63,7 @@ namespace AuthServer.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
-            }
-
+            } 
             // If we got this far, something failed, redisplay form
             return Page();
         }

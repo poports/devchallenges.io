@@ -2,7 +2,9 @@
 using AuthServer.Infrastructure.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -30,7 +32,7 @@ namespace AuthServer.Infrastructure.Identity
             return user;
         }
 
-        public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
+        public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password, IEnumerable<Claim> claims)
         {
             var user = new ApplicationUser
             {
@@ -39,8 +41,15 @@ namespace AuthServer.Infrastructure.Identity
             };
 
             var result = await _userManager.CreateAsync(user, password);
+            await _userManager.AddClaimsAsync(user, claims);
 
             return (result.ToApplicationResult(), user.Id);
+        }
+
+        public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user) {
+            var result = await _userManager.GetClaimsAsync(user);
+
+            return result;
         }
 
         public async Task<Result> DeleteUserAsync(string userId)
@@ -61,5 +70,15 @@ namespace AuthServer.Infrastructure.Identity
 
             return result.ToApplicationResult();
         }
+
+        public async Task<Result> AddClaimAsync(ApplicationUser user, Claim claim)
+        {
+            var result = await _userManager.AddClaimAsync(user, claim);
+
+            return result.ToApplicationResult();
+        }
+
+
+
     }
 }

@@ -39,10 +39,7 @@ namespace AuthServer.Infrastructure.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    Bio = table.Column<string>(nullable: true),
-                    FullName = table.Column<string>(nullable: true),
-                    Photo = table.Column<byte[]>(nullable: true)
+                    AccessFailedCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

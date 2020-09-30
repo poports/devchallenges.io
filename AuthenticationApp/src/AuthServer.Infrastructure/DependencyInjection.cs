@@ -77,6 +77,7 @@ namespace AuthServer.Infrastructure
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             });
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/Login";
