@@ -19,7 +19,7 @@ const Line = tw.hr`bg-gray-300 my-8 border-0 h-px`
 
 export default () => {
   const { profileList } = useProfileData()
-  console.log(profileList)
+  //console.log(profileList)
 
   return (
     <Container>

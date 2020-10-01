@@ -5,8 +5,8 @@ const useProfileData = () => {
   const context = useContext(UserContext)
 
   const [user, setUser] = useState({
-    name: '',
-    token: '',
+    name: null,
+    token: null,
     authenticated: false
   })
   const [profileList, setProfileList] = useState([])
@@ -19,7 +19,6 @@ const useProfileData = () => {
     })
 
     const fetchProfile = async () => {
-      if (!user.token) return
       const response = await fetch('/api/profile', {
         headers: !user.token ? {} : { Authorization: `Bearer ${user.token}` }
       })
@@ -27,7 +26,7 @@ const useProfileData = () => {
       setProfileList(data)
     }
 
-    fetchProfile()
+    if (user.token) fetchProfile()
   }, [context, user.token])
 
   return { user, profileList }

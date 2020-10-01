@@ -1,12 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import tw from 'twin.macro'
+import { DropdownMenu } from './../components'
 
 const Nav = tw.nav`bg-white fixed w-full z-10 top-0 shadow`
 const Container = tw.div`w-full container mx-auto flex flex-wrap items-center justify-between my-4`
 const Left = tw.div`pl-4 md:pl-0 flex items-center`
-const Right = tw.div`pr-4 flex justify-end`
-const Button = tw.button``
+const Right = tw.div`pr-4 flex justify-end items-center`
 
 export default () => {
   return (
@@ -34,8 +33,7 @@ export default () => {
           </svg>
         </Left>
         <Right>
-          <Link to="/authentication/logout">Logout</Link>
-          <Button>Menu</Button>
+          <DropdownMenu></DropdownMenu>
         </Right>
       </Container>
     </Nav>
