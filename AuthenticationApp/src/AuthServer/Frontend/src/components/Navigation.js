@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import tw from 'twin.macro'
 
 const Nav = tw.nav`bg-white fixed w-full z-10 top-0 shadow`
@@ -33,6 +34,7 @@ export default () => {
           </svg>
         </Left>
         <Right>
+          <Link to="/authentication/logout">Logout</Link>
           <Button>Menu</Button>
         </Right>
       </Container>
