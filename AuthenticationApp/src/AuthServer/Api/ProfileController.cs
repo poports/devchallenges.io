@@ -10,19 +10,21 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace AuthServer.Api
 {
-    [Route("/api/profile")]
+
     [Authorize(AuthenticationSchemes = IdentityServerConstants.LocalApi.AuthenticationScheme)]
     public class ProfileController : ControllerBase
     {
         private readonly IIdentityService _identityService;
         public ProfileController(IIdentityService identityService)
         {
-            _identityService =  identityService;
+            _identityService = identityService;
         }
 
+        [Route("api/[controller]")]
         public async Task<IActionResult> Get()
         {
             //var userId = User.FindFirstValue(JwtClaimTypes.Subject);
@@ -30,15 +32,22 @@ namespace AuthServer.Api
             var user = await _identityService.GetUserAsync(userId);
             var claims = await _identityService.GetClaimsAsync(user);
 
-            var result = new
-            {
-                email = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value, 
-                phone = claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase))?.Value,
-                bio = claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase))?.Value,
-                name = claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value
-            };
+            var result = new List<ApiResultItem>();
+            result.Add(new ApiResultItem() { Name = "name", Value = claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value });
+            result.Add(new ApiResultItem() { Name = "bio", Value = claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase))?.Value });
+            result.Add(new ApiResultItem() { Name = "phone", Value = claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase))?.Value });
+            result.Add(new ApiResultItem() { Name = "email", Value = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value });
+
+
+
 
             return new JsonResult(result);
         }
+    }
+
+    internal class ApiResultItem
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

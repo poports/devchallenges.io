@@ -1,4 +1,5 @@
 import React from 'react'
+import useProfileData from './../hooks/useProfileData'
 import tw from 'twin.macro'
 
 const Container = tw.div`container w-full justify-center flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-16`
@@ -16,11 +17,14 @@ const CardItemLabel = tw.span`text-gray-600 font-semibold md:text-left text-sm m
 const CardItemValue = tw.span`w-full px-4 h-10 rounded-lg`
 const Line = tw.hr`bg-gray-300 my-8 border-0 h-px`
 
-const ProfileCard = () => {
+export default () => {
+  const { profileList } = useProfileData()
+  console.log(profileList)
+
   return (
     <Container>
       <Section>
-        <SectionHeadline>Personal info</SectionHeadline>
+        <SectionHeadline>PersonalInfo</SectionHeadline>
         <SectionDescription>
           Basic info, like your name and photo
         </SectionDescription>
@@ -30,55 +34,23 @@ const ProfileCard = () => {
             Changes will be reflected to every services
           </CardDescription>
           <Line />
-          <CardItem>
-            <CardItemLeft>
-              <CardItemLabel>Photo</CardItemLabel>
-            </CardItemLeft>
-            <CardItemRight>
-              <CardItemValue>[Photo]</CardItemValue>
-            </CardItemRight>
-          </CardItem>
-          <Line />
-          <CardItem>
-            <CardItemLeft>
-              <CardItemLabel>Name</CardItemLabel>
-            </CardItemLeft>
-            <CardItemRight>
-              <CardItemValue>Roberto</CardItemValue>
-            </CardItemRight>
-          </CardItem>
-          <Line />
-          <CardItem>
-            <CardItemLeft>
-              <CardItemLabel>Bio</CardItemLabel>
-            </CardItemLeft>
-            <CardItemRight>
-              <CardItemValue>Developer</CardItemValue>
-            </CardItemRight>
-          </CardItem>
-          <Line />
-          <CardItem>
-            <CardItemLeft>
-              <CardItemLabel>Phone</CardItemLabel>
-            </CardItemLeft>
-            <CardItemRight>
-              <CardItemValue>1234567890</CardItemValue>
-            </CardItemRight>
-          </CardItem>
-          <Line />
-          <CardItem>
-            <CardItemLeft>
-              <CardItemLabel>Email</CardItemLabel>
-            </CardItemLeft>
-            <CardItemRight>
-              <CardItemValue>poports@gmail.com</CardItemValue>
-            </CardItemRight>
-          </CardItem>
-          <Line />
+          {profileList.map((item, index) => (
+            <div key={index}>
+              <CardItem>
+                <CardItemLeft>
+                  <CardItemLabel>{item.name}</CardItemLabel>
+                </CardItemLeft>
+                <CardItemRight>
+                  <CardItemValue>
+                    {item.value ? item.value : '[not set]'}
+                  </CardItemValue>
+                </CardItemRight>
+              </CardItem>
+              <Line />
+            </div>
+          ))}
         </Card>
       </Section>
     </Container>
   )
 }
-
-export default ProfileCard
