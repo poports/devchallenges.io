@@ -25,7 +25,7 @@ namespace AuthServer.Pages.Account
 
         public async Task<IActionResult> OnGet(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/authentication/logout-callback");
 
             await _signInManager.SignOutAsync();
 

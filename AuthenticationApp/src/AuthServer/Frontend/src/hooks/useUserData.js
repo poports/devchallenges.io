@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import { UserContext } from './../App'
 
-const useProfileData = () => {
+const useUserData = () => {
   const context = useContext(UserContext)
 
   const [user, setUser] = useState({
@@ -10,14 +10,16 @@ const useProfileData = () => {
     authenticated: false
   })
   const [profileList, setProfileList] = useState([])
+  const [photo, setPhoto] = useState(null)
 
   useEffect(() => {
     setUser({
       name: context.user,
       token: context.token,
-      authenticated: context.authenticated
+      authenticated: context.isAuthenticated
     })
 
+    //refactor later
     const fetchProfile = async () => {
       const response = await fetch('/api/profile', {
         headers: !user.token ? {} : { Authorization: `Bearer ${user.token}` }
@@ -26,10 +28,22 @@ const useProfileData = () => {
       setProfileList(data)
     }
 
-    if (user.token) fetchProfile()
+    const fetchPhoto = async () => {
+      const response = await fetch('/api/photo', {
+        headers: !user.token ? {} : { Authorization: `Bearer ${user.token}` }
+      })
+      const data = await response.json()
+      setPhoto(data.photo)
+    }
+
+    if (user.token) {
+      fetchProfile()
+      fetchPhoto()
+    }
+    //end refactor later
   }, [context, user.token])
 
-  return { user, profileList }
+  return { user, profileList, photo }
 }
 
-export default useProfileData
+export default useUserData

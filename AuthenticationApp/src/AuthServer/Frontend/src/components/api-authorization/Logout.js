@@ -7,6 +7,8 @@ import {
   LogoutActions,
   ApplicationPaths
 } from './ApiAuthorizationConstants'
+import tw from 'twin.macro'
+const Container = tw.div`h-screen w-full flex justify-center items-center`
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -55,21 +57,22 @@ export class Logout extends Component {
   }
 
   render() {
-    const { isReady, message } = this.state
+      const { isReady, message } = this.state
+
     if (!isReady) {
       return <div></div>
     }
     if (!!message) {
-      return <div>{message}</div>
+        return <Container>{message}</Container>
     } else {
       const action = this.props.action
       switch (action) {
         case LogoutActions.Logout:
-          return <div>Processing logout</div>
+              return <Container>Processing logout</Container>
         case LogoutActions.LogoutCallback:
-          return <div>Processing logout callback</div>
+              return <Container>Processing logout callback</Container>
         case LogoutActions.LoggedOut:
-          return <div>{message}</div>
+              return <Container>{message}</Container>
         default:
           throw new Error(`Invalid action '${action}'`)
       }

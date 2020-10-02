@@ -146,8 +146,8 @@ export class AuthorizeService {
       scope: process.env.REACT_APP_OIDC_SCOPE
     }
 
-    // settings.automaticSilentRenew = false
-    // settings.includeIdTokenInSilentRenew = false
+    settings.automaticSilentRenew = true
+    settings.includeIdTokenInSilentRenew = false
     settings.userStore = new WebStorageStateStore({
       prefix: ApplicationName
     })

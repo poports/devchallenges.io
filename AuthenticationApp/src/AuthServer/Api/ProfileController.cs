@@ -24,7 +24,7 @@ namespace AuthServer.Api
             _identityService = identityService;
         }
 
-        [Route("api/[controller]")]
+        [Route("api/profile")]
         public async Task<IActionResult> Get()
         {
             //var userId = User.FindFirstValue(JwtClaimTypes.Subject);
@@ -38,11 +38,27 @@ namespace AuthServer.Api
             result.Add(new ApiResultItem() { Name = "phone", Value = claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase))?.Value });
             result.Add(new ApiResultItem() { Name = "email", Value = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value });
 
+            return new JsonResult(result);
+        }
 
+        [Route("api/photo")]
+        public async Task<IActionResult> GetPhoto()
+        {
+            var userId = User.Identity.GetSubjectId();
+            var user = await _identityService.GetUserAsync(userId);
+            var claims = await _identityService.GetClaimsAsync(user);
 
+            var photoClaim = claims?.FirstOrDefault(x => x.Type.Equals("photo", StringComparison.OrdinalIgnoreCase))?.Value;
+
+            var result = new
+            {
+                photo = photoClaim
+            };
+            
 
             return new JsonResult(result);
         }
+
     }
 
     internal class ApiResultItem
