@@ -65,8 +65,11 @@ export default () => {
                   <Line />
                 </MenuItem>
                 <MenuItem>
-                  {/* prettier-ignore */}
-                  <StyledLink danger="true" onClick={toggleMenu} to="/authentication/logout">
+                  <StyledLink
+                    danger="true"
+                    onClick={toggleMenu}
+                    to="/authentication/logout"
+                  >
                     Logout
                   </StyledLink>
                 </MenuItem>

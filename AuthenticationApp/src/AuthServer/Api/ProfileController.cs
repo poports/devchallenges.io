@@ -36,7 +36,7 @@ namespace AuthServer.Api
             result.Add(new ApiResultItem() { Name = "name", Value = claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value });
             result.Add(new ApiResultItem() { Name = "bio", Value = claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase))?.Value });
             result.Add(new ApiResultItem() { Name = "phone", Value = claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase))?.Value });
-            result.Add(new ApiResultItem() { Name = "email", Value = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value });
+            result.Add(new ApiResultItem() { Name = "contact email", Value = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value });
 
             return new JsonResult(result);
         }

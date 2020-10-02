@@ -47,7 +47,7 @@ namespace AuthServer.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null) {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/authentication/login-callback");
 
             if (ModelState.IsValid)
             {

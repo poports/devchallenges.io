@@ -1,7 +1,5 @@
-using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Infrastructure.Identity;
 using AuthServer.Models;
-using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +24,7 @@ namespace AuthServer.Pages.Account.Manage
 
         [BindProperty]
         public ProfileInputModel Input { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
         public string Username { get; set; }
@@ -58,9 +57,10 @@ namespace AuthServer.Pages.Account.Manage
 
             var claims = await _userManager.GetClaimsAsync(user);
             //TODO: refactor this later
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase)), new Claim ("phone", Input.PhoneNumber));
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)), new Claim("name", Input.FullName));
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase)), new Claim("bio", Input.Bio));
+            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase)), new Claim ("phone", Input.PhoneNumber ?? string.Empty));
+            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)), new Claim("name", Input.FullName ?? string.Empty));
+            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase)), new Claim("bio", Input.Bio ?? string.Empty));
+            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase)), new Claim("email", Input.ContactEmail?? string.Empty));
 
             await _signInManager.RefreshSignInAsync(user);
 
@@ -78,8 +78,9 @@ namespace AuthServer.Pages.Account.Manage
 
             Input = new ProfileInputModel
             {
+                Email = user.UserName,
                 PhoneNumber = claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase))?.Value,
-                Email = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value,
+                ContactEmail = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value,
                 Bio = claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase))?.Value,
                 FullName= claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value
             };

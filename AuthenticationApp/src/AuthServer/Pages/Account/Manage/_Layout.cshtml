@@ -11,5 +11,10 @@
     <div class="container w-full justify-center flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-16">
         @RenderBody()
     </div>
+
+    @section Scripts {
+        @RenderSection("Scripts", required: false)
+    }
+
 </body>
 </html>
