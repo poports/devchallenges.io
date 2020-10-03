@@ -233,6 +233,10 @@ textarea {
  * Add the correct display in IE 10.
  */
 
+[hidden] {
+	display: none;
+}
+
 /**
  * Manually forked from SUIT CSS Base: https://github.com/suitcss/base
  * A thin layer on top of normalize.css that provides a starting point more
@@ -486,6 +490,12 @@ input:invalid {
 	background-color: rgba(99, 179, 237, var(--bg-opacity));
 }
 
+.hover\:bg-blue-500:hover {
+	--bg-opacity: 1;
+	background-color: #4299e1;
+	background-color: rgba(66, 153, 225, var(--bg-opacity));
+}
+
 .border-gray-500 {
 	--border-opacity: 1;
 	border-color: #a0aec0;
@@ -522,12 +532,20 @@ input:invalid {
 	border-width: 1px;
 }
 
+.cursor-pointer {
+	cursor: pointer;
+}
+
 .inline-block {
 	display: inline-block;
 }
 
 .flex {
 	display: flex;
+}
+
+.hidden {
+	display: none;
 }
 
 .flex-col {
@@ -578,12 +596,24 @@ input:invalid {
 	height: 1.25rem;
 }
 
+.h-8 {
+	height: 2rem;
+}
+
 .h-10 {
 	height: 2.5rem;
 }
 
 .h-12 {
 	height: 3rem;
+}
+
+.h-24 {
+	height: 6rem;
+}
+
+.h-full {
+	height: 100%;
 }
 
 .h-screen {
@@ -698,6 +728,11 @@ input:invalid {
 	min-height: 100vh;
 }
 
+.object-cover {
+	-o-object-fit: cover;
+	object-fit: cover;
+}
+
 .focus\:outline-none:focus {
 	outline: 0;
 }
@@ -778,12 +813,20 @@ input:invalid {
 	position: fixed;
 }
 
+.absolute {
+	position: absolute;
+}
+
 .top-0 {
 	top: 0;
 }
 
 .shadow {
 	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.shadow-lg {
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .focus\:shadow-outline:focus {
@@ -800,6 +843,10 @@ input:invalid {
 
 .text-center {
 	text-align: center;
+}
+
+.text-transparent {
+	color: transparent;
 }
 
 .text-white {
@@ -862,6 +909,12 @@ input:invalid {
 	color: rgba(255, 255, 255, var(--text-opacity));
 }
 
+.hover\:text-blue-500:hover {
+	--text-opacity: 1;
+	color: #4299e1;
+	color: rgba(66, 153, 225, var(--text-opacity));
+}
+
 .hover\:text-accent:hover {
 	--text-opacity: 1;
 	color: #C73622;
@@ -891,6 +944,14 @@ input:invalid {
 .break-normal {
 	overflow-wrap: normal;
 	word-break: normal;
+}
+
+.w-8 {
+	width: 2rem;
+}
+
+.w-24 {
+	width: 6rem;
 }
 
 .w-full {

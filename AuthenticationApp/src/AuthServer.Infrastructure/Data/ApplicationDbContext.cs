@@ -1,14 +1,18 @@
 ﻿using AuthServer.Infrastructure.Common.Interfaces;
+using AuthServer.Infrastructure.Common.Models;
 using AuthServer.Infrastructure.Identity;
 using IdentityServer4.EntityFramework.Entities;
 using IdentityServer4.EntityFramework.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using static AuthServer.Infrastructure.Common.DomainEvent;
+using  AuthServer.Infrastructure.Common;
 
 namespace AuthServer.Infrastructure.Data
 {
@@ -25,6 +29,9 @@ namespace AuthServer.Infrastructure.Data
             _currentUserService = currentUserService;
             _domainEventService = domainEventService;
         }
+
+        public DbSet<UserProfile> UserProfile { get; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             int result = await base.SaveChangesAsync(cancellationToken);

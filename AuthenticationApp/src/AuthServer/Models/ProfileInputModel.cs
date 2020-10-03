@@ -22,6 +22,10 @@ namespace AuthServer.Models
         [EmailAddress]
         [Display(Name = "Contact Email")]
         public string ContactEmail { get; set; }
+
+        [Display(Name = "Photo")]
+        [DataType(DataType.Text)]
+        public string Photo { get; set; }
     }
 
 }

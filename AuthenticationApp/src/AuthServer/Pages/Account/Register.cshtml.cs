@@ -1,4 +1,5 @@
 using AuthServer.Infrastructure.Common.Interfaces;
+using AuthServer.Infrastructure.Common.Models;
 using AuthServer.Infrastructure.Identity;
 using AuthServer.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -8,8 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
+
+
 
 namespace AuthServer.Pages.Account
 {
@@ -17,11 +19,13 @@ namespace AuthServer.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly IIdentityService _identityService;
+        private readonly IUserProfileService _profileService;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager)
+         public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager, IUserProfileService profileService)
         {
             _identityService = identityService;
-            _signInManager = signInManager; 
+            _signInManager = signInManager;
+            _profileService = profileService;
         }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -44,22 +48,25 @@ namespace AuthServer.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var claims = new List<Claim>() {
-                    new Claim("username", Input.Email),
-                    new Claim("name", string.Empty),
-                    new Claim("email", Input.Email),
-                    new Claim("bio", string.Empty),
-                    new Claim("phone", string.Empty)
+                var profile = new UserProfile()
+                {
+                    FullName = string.Empty,
+                    Bio = string.Empty,
+                    Photo = string.Empty
                 };
 
-                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password, claims);
+                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password);
+                var profileResult = await _profileService.CreateProfile(profile);
 
-                if (Result.Succeeded) {
+                if (Result.Succeeded && profileResult != null ) {
                     var user = await _identityService.GetUserAsync(UserId);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
 
+                if (profileResult == null) {
+                    ModelState.AddModelError(string.Empty, "Error adding profile");
+                }
                 foreach (var error in Result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error);

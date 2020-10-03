@@ -33,6 +33,7 @@ namespace AuthServer.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
             services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -83,8 +84,6 @@ namespace AuthServer.Infrastructure
                 options.LogoutPath = "/Account/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
-
-
 
             return services;
         }

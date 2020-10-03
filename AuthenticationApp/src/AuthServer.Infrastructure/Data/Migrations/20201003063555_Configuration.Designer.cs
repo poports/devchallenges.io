@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthServer.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20200930134503_Configuration")]
+    [Migration("20201003063555_Configuration")]
     partial class Configuration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
