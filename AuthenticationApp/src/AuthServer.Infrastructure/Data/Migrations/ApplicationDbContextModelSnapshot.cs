@@ -31,6 +31,9 @@ namespace AuthServer.Infrastructure.Data.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("UserProfile");

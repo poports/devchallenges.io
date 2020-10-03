@@ -1,7 +1,9 @@
 ﻿using AuthServer.Infrastructure.Common.Events;
+using AuthServer.Infrastructure.Common.Exceptions;
 using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Infrastructure.Common.Models;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +21,7 @@ namespace AuthServer.Infrastructure.Services
         {
             var entity = new UserProfile
             {
+                UserId = profile.UserId,
                 FullName = profile.FullName,
                 Bio = profile.Bio,
                 Photo = profile.Photo
@@ -32,14 +35,34 @@ namespace AuthServer.Infrastructure.Services
             return entity.Id;
         }
 
-        public Task<UserProfile> GetProfile(string userId)
+        public UserProfile GetProfile(string userId)
         {
-            throw new NotImplementedException();
+            var entity = _context.UserProfile.Single(x => x.UserId == userId);
+                                        
+            if (entity == null)
+            {
+                throw new NotFoundException(nameof(UserProfile), userId);
+            }
+            
+            return entity;
         }
 
-        public Task<Guid> UpdateProfile(string userId)
+        public async Task<Guid> UpdateProfile(UserProfile profile)
         {
-            throw new NotImplementedException();
+            var entity = _context.UserProfile.Single(x => x.UserId == profile.UserId);
+
+            if (entity == null)
+            {
+                throw new NotFoundException(nameof(UserProfile), profile.Id);
+            }
+            
+            entity.Bio = profile.Bio;
+            entity.Photo = profile.Photo ?? entity.Photo; //don't touch if null
+            entity.FullName = profile.FullName;
+
+            await _context.SaveChangesAsync(new CancellationToken());
+            return entity.Id;
+
         }
     }
 }

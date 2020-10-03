@@ -19,9 +19,11 @@ namespace AuthServer.Api
     public class ProfileController : ControllerBase
     {
         private readonly IIdentityService _identityService;
-        public ProfileController(IIdentityService identityService)
+        private readonly IUserProfileService _profileService;
+        public ProfileController(IIdentityService identityService, IUserProfileService profileService)
         {
             _identityService = identityService;
+            _profileService = profileService;
         }
 
         [Route("api/profile")]
@@ -30,32 +32,27 @@ namespace AuthServer.Api
             //var userId = User.FindFirstValue(JwtClaimTypes.Subject);
             var userId = User.Identity.GetSubjectId();
             var user = await _identityService.GetUserAsync(userId);
-            var claims = await _identityService.GetClaimsAsync(user);
+            var profile  = _profileService.GetProfile(userId);
 
             var result = new List<ApiResultItem>();
-            result.Add(new ApiResultItem() { Name = "name", Value = claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value });
-            result.Add(new ApiResultItem() { Name = "bio", Value = claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase))?.Value });
-            result.Add(new ApiResultItem() { Name = "phone", Value = claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase))?.Value });
-            result.Add(new ApiResultItem() { Name = "contact email", Value = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value });
+            result.Add(new ApiResultItem() { Name = "name", Value = profile.FullName });
+            result.Add(new ApiResultItem() { Name = "bio", Value = profile.Bio });
+            result.Add(new ApiResultItem() { Name = "phone", Value = user.PhoneNumber });
+            result.Add(new ApiResultItem() { Name = "contact email", Value = user.Email });
 
             return new JsonResult(result);
         }
 
         [Route("api/photo")]
-        public async Task<IActionResult> GetPhoto()
+        public IActionResult GetPhoto()
         {
             var userId = User.Identity.GetSubjectId();
-            var user = await _identityService.GetUserAsync(userId);
-            var claims = await _identityService.GetClaimsAsync(user);
-
-            var photoClaim = claims?.FirstOrDefault(x => x.Type.Equals("photo", StringComparison.OrdinalIgnoreCase))?.Value;
+            var profile = _profileService.GetProfile(userId);
 
             var result = new
             {
-                photo = photoClaim
+                photo = profile.Photo
             };
-            
-
             return new JsonResult(result);
         }
 

@@ -20,11 +20,11 @@
                     @*<a asp-page="ChangePhoto" class="uppercase text-sm tracking-normal text-blue-500 font-semibold hover:text-accent">Change Photo</a>*@
 
                     <label class="h-24 w-24 flex flex-col items-center bg-white rounded-lg text-transparent shadow-lg tracking-wide uppercase border border-blue-500 cursor-pointer hover:bg-blue-500 hover:text-blue-500">
-                        <img class="h-full w-full object-cover rounded-lg" src="@Model.Input.Photo" />
+                        <img asp-for="Model.Input.Photo" class="h-full w-full object-cover rounded-lg" src="@Model.Photo" id="output" />
                         <svg class="absolute my-4 w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                         </svg>
-                        <input name="file" type="file" class="hidden" />
+                        <input name="file" type="file" class="hidden" accept=".gif,.jpg,.jpeg,.png" onchange="loadFile(event)" />
                     </label>
                 </div>
             </div>
@@ -105,5 +105,16 @@
         <span>devchallenges.io</span>
     </div>
 </section>
+
+
+@section Scripts {
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+}
+
 
 

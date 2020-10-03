@@ -48,14 +48,16 @@ namespace AuthServer.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password);
+
                 var profile = new UserProfile()
                 {
+                    UserId = UserId,
                     FullName = string.Empty,
                     Bio = string.Empty,
                     Photo = string.Empty
                 };
 
-                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password);
                 var profileResult = await _profileService.CreateProfile(profile);
 
                 if (Result.Succeeded && profileResult != null ) {

@@ -9,6 +9,7 @@ namespace AuthServer.Infrastructure.Common.Models
     public class UserProfile : IHasDomainEvent
     {
         public Guid Id{ get; set; }
+        public string  UserId { get; set; }
         public string  FullName { get; set; }
         public string Bio { get; set; }
         public string Photo { get; set; }

@@ -1,3 +1,5 @@
+using AuthServer.Infrastructure.Common.Interfaces;
+using AuthServer.Infrastructure.Common.Models;
 using AuthServer.Infrastructure.Identity;
 using AuthServer.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +12,6 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AuthServer.Pages.Account.Manage
@@ -21,10 +21,12 @@ namespace AuthServer.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public IndexModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly IUserProfileService _profileService;
+        public IndexModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IUserProfileService profileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _profileService = profileService;
         }
 
         [BindProperty]
@@ -33,6 +35,9 @@ namespace AuthServer.Pages.Account.Manage
         [TempData]
         public string StatusMessage { get; set; }
         public string Username { get; set; }
+
+        public string Photo{ get; set; }
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -60,18 +65,28 @@ namespace AuthServer.Pages.Account.Manage
                 return Page();
             }
 
-            var claims = await _userManager.GetClaimsAsync(user);
+
+            var profile = new UserProfile();
 
             if (file != null)
             {
                 Input.Photo = Upload(file);
-                await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("photo", StringComparison.OrdinalIgnoreCase)), new Claim("photo", Input.Photo ?? string.Empty));
             }
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase)), new Claim ("phone", Input.PhoneNumber ?? string.Empty));
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase)), new Claim("name", Input.FullName ?? string.Empty));
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase)), new Claim("bio", Input.Bio ?? string.Empty));
-            await _userManager.ReplaceClaimAsync(user, claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase)), new Claim("email", Input.ContactEmail?? string.Empty));
+            
 
+
+            //TODO: Validate if values are changed
+            var phoneToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, Input.PhoneNumber);
+            await _userManager.ChangePhoneNumberAsync(user, Input.PhoneNumber, phoneToken);
+            var emailToken = await _userManager.GenerateChangeEmailTokenAsync(user, Input.ContactEmail);
+            await _userManager.ChangeEmailAsync(user, Input.ContactEmail, emailToken);
+
+            profile.Photo = Input.Photo ?? Photo;
+            profile.UserId = user.Id;
+            profile.FullName = Input.FullName ?? string.Empty;
+            profile.Bio = Input.Bio ?? string.Empty;
+
+            await _profileService.UpdateProfile(profile);
             await _signInManager.RefreshSignInAsync(user);
 
             StatusMessage = "Your profile has been updated";
@@ -82,26 +97,30 @@ namespace AuthServer.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            var claims = await _userManager.GetClaimsAsync(user);
+            var email = await _userManager.GetEmailAsync(user);
+            var profile = _profileService.GetProfile(user.Id);
 
             Username = userName;
+            Photo = profile.Photo;
 
             Input = new ProfileInputModel
             {
                 Email = user.UserName,
-                PhoneNumber = claims?.FirstOrDefault(x => x.Type.Equals("phone", StringComparison.OrdinalIgnoreCase))?.Value,
-                ContactEmail = claims?.FirstOrDefault(x => x.Type.Equals("email", StringComparison.OrdinalIgnoreCase))?.Value,
-                Bio = claims?.FirstOrDefault(x => x.Type.Equals("bio", StringComparison.OrdinalIgnoreCase))?.Value,
-                FullName= claims?.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value,
-                Photo = claims?.FirstOrDefault(x => x.Type.Equals("photo", StringComparison.OrdinalIgnoreCase))?.Value
+                PhoneNumber = phoneNumber ?? string.Empty,
+                ContactEmail = email ?? string.Empty,
+                Bio = profile.Bio,
+                FullName= profile.FullName,
+                Photo = profile.Photo
             };
         }
-
+        
         private string Upload(IFormFile file)
         {
             string result = "";
             using var image = Image.Load(file.OpenReadStream());
-            //image.Mutate(x => x.Resize(128, 128));
+
+            image.Mutate(x => x.Resize(256,256));
+
             using (var outputStream = new MemoryStream())
             {
                 image.Save(outputStream, new JpegEncoder());
