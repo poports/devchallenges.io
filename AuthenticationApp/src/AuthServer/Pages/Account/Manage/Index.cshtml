@@ -19,11 +19,16 @@
                 <div class="lg:w-3/4">
                     @*<a asp-page="ChangePhoto" class="uppercase text-sm tracking-normal text-blue-500 font-semibold hover:text-accent">Change Photo</a>*@
 
-                    <label class="h-24 w-24 flex flex-col items-center bg-white rounded-lg text-transparent shadow-lg tracking-wide uppercase border border-blue-500 cursor-pointer hover:bg-blue-500 hover:text-blue-500">
+                    <label class="h-24 w-24 flex flex-col items-center bg-gray-200 rounded-lg text-gray-200 shadow-lg tracking-wide uppercase border-2 border-blue-500 cursor-pointer hover:bg-blue-200 hover:text-blue-500">
                         <img asp-for="Model.Input.Photo" class="h-full w-full object-cover rounded-lg" src="@Model.Photo" id="output" />
-                        <svg class="absolute my-4 w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                        </svg>
+                            <svg class="absolute my-8 w-8 h-8" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="12" cy="12" r="3.2" fill="currentColor"></circle>
+                            <path
+                                fill="currentColor"
+                                d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"
+                            ></path>
+                            </svg>
                         <input name="file" type="file" class="hidden" accept=".gif,.jpg,.jpeg,.png" onchange="loadFile(event)" />
                     </label>
                 </div>
@@ -89,7 +94,7 @@
             <div class="lg:flex md:items-center">
                 <div class="lg:w-1/4"></div>
                 <div class="lg:w-3/4 flex justify-end">
-                    <a asp-controller="profile" asp-action="Index" class="tracking-wider border border-blue-500 border-gray-500 bg-transparent-700 hover:bg-blue-400 focus:outline-none hover:text-white text-blue-500 font-bold py-2 px-8 rounded mx-2">
+                    <a asp-controller="profile" asp-action="Index" class="tracking-wider border border-blue-500  bg-transparent hover:bg-blue-400 focus:outline-none hover:text-white text-blue-500 font-bold py-2 px-8 rounded mx-2">
                         Back
                     </a>
                     <button class="tracking-wider shadow bg-blue-700 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-8 rounded mr-10"

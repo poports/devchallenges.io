@@ -121,7 +121,8 @@ textarea {
  */
 
 button,
-input { /* 1 */
+input {
+	/* 1 */
 	overflow: visible;
 }
 
@@ -130,7 +131,8 @@ input { /* 1 */
  * 1. Remove the inheritance of text transform in Firefox.
  */
 
-button { /* 1 */
+button {
+	/* 1 */
 	text-transform: none;
 }
 
@@ -139,31 +141,31 @@ button { /* 1 */
  */
 
 button,
-[type="button"],
-[type="submit"] {
+[type='button'],
+[type='submit'] {
 	-webkit-appearance: button;
 }
 
-	/**
+/**
  * Remove the inner border and padding in Firefox.
  */
 
-	button::-moz-focus-inner,
-	[type="button"]::-moz-focus-inner,
-	[type="submit"]::-moz-focus-inner {
-		border-style: none;
-		padding: 0;
-	}
+button::-moz-focus-inner,
+[type='button']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
+	border-style: none;
+	padding: 0;
+}
 
-	/**
+/**
  * Restore the focus styles unset by the previous rule.
  */
 
-	button:-moz-focusring,
-	[type="button"]:-moz-focusring,
-	[type="submit"]:-moz-focusring {
-		outline: 1px dotted ButtonText;
-	}
+button:-moz-focusring,
+[type='button']:-moz-focusring,
+[type='submit']:-moz-focusring {
+	outline: 1px dotted ButtonText;
+}
 
 /**
  * Correct the padding in Firefox.
@@ -247,7 +249,6 @@ textarea {
  * Removes the default spacing and border for appropriate elements.
  */
 
-
 h1,
 h4,
 p {
@@ -259,15 +260,15 @@ button {
 	background-image: none;
 }
 
-	/**
+/**
  * Work around a Firefox/IE bug where the transparent `button` background
  * results in a loss of the default `button` focus styles.
  */
 
-	button:focus {
-		outline: 1px dotted;
-		outline: 5px auto -webkit-focus-ring-color;
-	}
+button:focus {
+	outline: 1px dotted;
+	outline: 5px auto -webkit-focus-ring-color;
+}
 
 /**
  * Tailwind custom reset styles
@@ -342,18 +343,20 @@ textarea {
 	resize: vertical;
 }
 
-	input::-moz-placeholder, textarea::-moz-placeholder {
-		color: #a0aec0;
-	}
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+	color: #a0aec0;
+}
 
-	input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-		color: #a0aec0;
-	}
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+	color: #a0aec0;
+}
 
-	input::placeholder,
-	textarea::placeholder {
-		color: #a0aec0;
-	}
+input::placeholder,
+textarea::placeholder {
+	color: #a0aec0;
+}
 
 button {
 	cursor: pointer;
@@ -472,6 +475,12 @@ input:invalid {
 	background-color: rgba(247, 250, 252, var(--bg-opacity));
 }
 
+.bg-gray-200 {
+	--bg-opacity: 1;
+	background-color: #edf2f7;
+	background-color: rgba(237, 242, 247, var(--bg-opacity));
+}
+
 .bg-blue-500 {
 	--bg-opacity: 1;
 	background-color: #4299e1;
@@ -484,16 +493,16 @@ input:invalid {
 	background-color: rgba(43, 108, 176, var(--bg-opacity));
 }
 
+.hover\:bg-blue-200:hover {
+	--bg-opacity: 1;
+	background-color: #bee3f8;
+	background-color: rgba(190, 227, 248, var(--bg-opacity));
+}
+
 .hover\:bg-blue-400:hover {
 	--bg-opacity: 1;
 	background-color: #63b3ed;
 	background-color: rgba(99, 179, 237, var(--bg-opacity));
-}
-
-.hover\:bg-blue-500:hover {
-	--bg-opacity: 1;
-	background-color: #4299e1;
-	background-color: rgba(66, 153, 225, var(--bg-opacity));
 }
 
 .border-gray-500 {
@@ -526,6 +535,10 @@ input:invalid {
 
 .rounded-lg {
 	border-radius: 0.5rem;
+}
+
+.border-2 {
+	border-width: 2px;
 }
 
 .border {
@@ -669,6 +682,11 @@ input:invalid {
 .my-4 {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+}
+
+.my-8 {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
 
 .mx-auto {
@@ -826,7 +844,8 @@ input:invalid {
 }
 
 .shadow-lg {
-	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .focus\:shadow-outline:focus {
@@ -845,10 +864,6 @@ input:invalid {
 	text-align: center;
 }
 
-.text-transparent {
-	color: transparent;
-}
-
 .text-white {
 	--text-opacity: 1;
 	color: #fff;
@@ -859,6 +874,12 @@ input:invalid {
 	--text-opacity: 1;
 	color: #f7fafc;
 	color: rgba(247, 250, 252, var(--text-opacity));
+}
+
+.text-gray-200 {
+	--text-opacity: 1;
+	color: #edf2f7;
+	color: rgba(237, 242, 247, var(--text-opacity));
 }
 
 .text-gray-500 {
@@ -917,7 +938,7 @@ input:invalid {
 
 .hover\:text-accent:hover {
 	--text-opacity: 1;
-	color: #C73622;
+	color: #c73622;
 	color: rgba(199, 54, 34, var(--text-opacity));
 }
 
@@ -974,7 +995,10 @@ input:invalid {
 	--transform-skew-y: 0;
 	--transform-scale-x: 1;
 	--transform-scale-y: 1;
-	transform: translateX(var(--transform-translate-x)) translateY(var(--transform-translate-y)) rotate(var(--transform-rotate)) skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y)) scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
+	transform: translateX(var(--transform-translate-x))
+		translateY(var(--transform-translate-y)) rotate(var(--transform-rotate))
+		skewX(var(--transform-skew-x)) skewY(var(--transform-skew-y))
+		scaleX(var(--transform-scale-x)) scaleY(var(--transform-scale-y));
 }
 
 .transition-all {
@@ -1002,7 +1026,8 @@ input:invalid {
 }
 
 @keyframes ping {
-	75%, 100% {
+	75%,
+	100% {
 		transform: scale(2);
 		opacity: 0;
 	}
@@ -1010,26 +1035,26 @@ input:invalid {
 
 @keyframes pulse {
 	50% {
-		opacity: .5;
+		opacity: 0.5;
 	}
 }
 
 @keyframes bounce {
-	0%, 100% {
+	0%,
+	100% {
 		transform: translateY(-25%);
-		-webkit-animation-timing-function: cubic-bezier(0.8,0,1,1);
-		animation-timing-function: cubic-bezier(0.8,0,1,1);
+		-webkit-animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+		animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
 	}
 
 	50% {
 		transform: none;
-		-webkit-animation-timing-function: cubic-bezier(0,0,0.2,1);
-		animation-timing-function: cubic-bezier(0,0,0.2,1);
+		-webkit-animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+		animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
 	}
 }
 
 @media (min-width: 640px) {
-
 	.sm\:bg-white {
 		--bg-opacity: 1;
 		background-color: #fff;
@@ -1058,7 +1083,8 @@ input:invalid {
 	}
 
 	.sm\:shadow-lg {
-		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+		box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+			0 4px 6px -2px rgba(0, 0, 0, 0.05);
 	}
 
 	.sm\:w-128 {
@@ -1067,7 +1093,6 @@ input:invalid {
 }
 
 @media (min-width: 768px) {
-
 	.md\:items-center {
 		align-items: center;
 	}
@@ -1090,7 +1115,6 @@ input:invalid {
 }
 
 @media (min-width: 1024px) {
-
 	.lg\:flex {
 		display: flex;
 	}

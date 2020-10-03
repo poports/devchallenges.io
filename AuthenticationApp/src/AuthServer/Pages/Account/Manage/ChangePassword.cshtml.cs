@@ -42,11 +42,11 @@ namespace AuthServer.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            //var hasPassword = await _userManager.HasPasswordAsync(user);
-            //if (!hasPassword)
-            //{
-            //    return RedirectToPage("./SetPassword");
-            //}
+            var hasPassword = await _userManager.HasPasswordAsync(user);
+            if (!hasPassword)
+            {
+                return RedirectToPage("./SetPassword");
+            }
 
             return Page();
         }
@@ -78,7 +78,7 @@ namespace AuthServer.Pages.Account.Manage
             _logger.LogInformation("User changed their password successfully.");
             StatusMessage = "Your password has been changed.";
 
-            return RedirectToPage();
+            return RedirectToPage("./Index");
         }
     }
 }

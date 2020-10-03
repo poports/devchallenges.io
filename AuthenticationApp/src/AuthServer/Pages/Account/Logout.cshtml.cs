@@ -33,7 +33,7 @@ namespace AuthServer.Pages.Account
 
             if (returnUrl != null)
             {
-                return LocalRedirect(returnUrl);
+                return RedirectToPage(returnUrl);
             }
             else
             {
