@@ -1,5 +1,5 @@
 import { UserManager, WebStorageStateStore } from 'oidc-client';
-import { ApplicationPaths, ApplicationName } from './ApiAuthorizationConstants';
+import { ApplicationName } from './ApiAuthorizationConstants';
 
 export class AuthorizeService {
 	_callbacks = [];
@@ -35,16 +35,49 @@ export class AuthorizeService {
 	async signIn(state) {
 		await this.ensureUserManagerInitialized();
 		try {
-			await this.userManager.signinRedirect(
-				this.createArguments(state)
+			const silentUser = await this.userManager.signinSilent(
+				this.createArguments()
 			);
-			return this.redirect();
-		} catch (redirectError) {
-			console.log(
-				'Redirect authentication error: ',
-				redirectError
-			);
-			return this.error(redirectError);
+			this.updateState(silentUser);
+			return this.success(state);
+		} catch (silentError) {
+			// User might not be authenticated, fallback to popup authentication
+			console.log('Silent authentication error: ', silentError);
+
+			try {
+				if (this._popUpDisabled) {
+					throw new Error(
+						"Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+					);
+				}
+
+				const popUpUser = await this.userManager.signinPopup(
+					this.createArguments()
+				);
+				this.updateState(popUpUser);
+				return this.success(state);
+			} catch (popUpError) {
+				if (popUpError.message === 'Popup window closed') {
+					// The user explicitly cancelled the login action by closing an opened popup.
+					return this.error('The user closed the window.');
+				} else if (!this._popUpDisabled) {
+					console.log('Popup authentication error: ', popUpError);
+				}
+
+				// PopUps might be blocked by the user, fallback to redirect
+				try {
+					await this.userManager.signinRedirect(
+						this.createArguments(state)
+					);
+					return this.redirect();
+				} catch (redirectError) {
+					console.log(
+						'Redirect authentication error: ',
+						redirectError
+					);
+					return this.error(redirectError);
+				}
+			}
 		}
 	}
 
@@ -60,16 +93,34 @@ export class AuthorizeService {
 		}
 	}
 
+	// We try to sign out the user in two different ways:
+	// 1) We try to do a sign-out using a PopUp Window. This might fail if there is a
+	//    Pop-Up blocker or the user has disabled PopUps.
+	// 2) If the method above fails, we redirect the browser to the IdP to perform a traditional
+	//    post logout redirect flow.
 	async signOut(state) {
 		await this.ensureUserManagerInitialized();
 		try {
-			await this.userManager.signoutRedirect(
-				this.createArguments(state)
-			);
-			return this.redirect();
-		} catch (redirectSignOutError) {
-			console.log('Redirect signout error: ', redirectSignOutError);
-			return this.error(redirectSignOutError);
+			if (this._popUpDisabled) {
+				throw new Error(
+					"Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+				);
+			}
+
+			await this.userManager.signoutPopup(this.createArguments());
+			this.updateState(undefined);
+			return this.success(state);
+		} catch (popupSignOutError) {
+			console.log('Popup signout error: ', popupSignOutError);
+			try {
+				await this.userManager.signoutRedirect(
+					this.createArguments(state)
+				);
+				return this.redirect();
+			} catch (redirectSignOutError) {
+				console.log('Redirect signout error: ', redirectSignOutError);
+				return this.error(redirectSignOutError);
+			}
 		}
 	}
 
@@ -154,11 +205,11 @@ export class AuthorizeService {
 			scope: process.env.REACT_APP_OIDC_SCOPE
 		}
 
-		settings.automaticSilentRenew = false;
-		settings.includeIdTokenInSilentRenew = false;
-		settings.userStore = new WebStorageStateStore({
-		    prefix: ApplicationName
-		});
+		settings.automaticSilentRenew = true;
+		settings.includeIdTokenInSilentRenew = true;
+		//settings.userStore = new WebStorageStateStore({
+		//    prefix: ApplicationName
+		//});
 		//console.log(settings);
 		this.userManager = new UserManager(settings);
 

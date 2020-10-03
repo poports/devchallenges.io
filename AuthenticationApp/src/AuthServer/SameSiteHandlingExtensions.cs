@@ -10,7 +10,7 @@ namespace AuthServer
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                options.MinimumSameSitePolicy = SameSiteMode.Lax;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
                 options.OnAppendCookie = cookieContext =>
                     CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
                 options.OnDeleteCookie = cookieContext =>

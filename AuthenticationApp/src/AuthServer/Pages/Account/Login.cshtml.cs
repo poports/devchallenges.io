@@ -47,7 +47,9 @@ namespace AuthServer.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null) {
-            returnUrl ??= Url.Content("~/authentication/login-callback"); 
+            returnUrl ??= Url.Content("~/authentication/login-callback");
+
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {

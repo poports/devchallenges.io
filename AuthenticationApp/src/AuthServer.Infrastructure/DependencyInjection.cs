@@ -4,7 +4,6 @@ using AuthServer.Infrastructure.Identity;
 using AuthServer.Infrastructure.Services;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
-using IdentityServer4.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -55,6 +54,12 @@ namespace AuthServer.Infrastructure
                 .AddDeveloperSigningCredential();
 
             services.AddAuthentication()
+                .AddGitHub(options =>
+                {
+                    options.ClientId = "d0c52598c369bd44976b";
+                    options.ClientSecret = "32b4af45e6fab6062838317b96c96b0c5f6ac4c2";
+                    options.Scope.Add("user:email");
+                })
                 .AddLocalApi(options =>
                 {
                     options.ExpectedScope = "api.read";

@@ -60,6 +60,7 @@ namespace AuthServer
             //app.UseHttpsRedirection();
 
             app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

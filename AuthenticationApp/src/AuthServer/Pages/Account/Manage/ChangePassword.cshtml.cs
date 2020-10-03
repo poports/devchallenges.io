@@ -1,5 +1,6 @@
 using AuthServer.Infrastructure.Identity;
 using AuthServer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Pages.Account.Manage
 {
+    [Authorize]
     public class ChangePasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
