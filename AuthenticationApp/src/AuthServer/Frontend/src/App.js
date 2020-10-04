@@ -51,7 +51,7 @@ export default () => {
             component={ApiAuthorizationRoutes}
           />
           <AuthorizeRoute path="/profile" component={Profile} />
-          <Route exact path="/" component={Home} />
+          <AuthorizeRoute exact path="/" component={Home} />
         </Switch>
       </Theme>
     </UserContext.Provider>

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -39,27 +40,34 @@ namespace AuthServer.Infrastructure
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders(); ;
 
-            services.AddIdentityServer()
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
-                    //this part is optional
-                    options.EnableTokenCleanup = true;
-                    options.TokenCleanupInterval = 300; // interval in seconds
-                })
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddDeveloperSigningCredential();
+            services.AddIdentityServer(options => {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+
+                // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+                options.EmitStaticAudienceClaim = true;
+            })
+            .AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
+            })
+            .AddOperationalStore(options =>
+            {
+                options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
+                //this part is optional
+                options.EnableTokenCleanup = true;
+                options.TokenCleanupInterval = 300; // interval in seconds
+            })
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddDeveloperSigningCredential();
 
             services.AddAuthentication()
                 .AddGitHub(options =>
                 {
-                    options.ClientId = "<Your Client ID>";
-                    options.ClientSecret = "<Your Client Secret>";
-
+                    options.ClientId = Environment.GetEnvironmentVariable("GITHUB_ID", EnvironmentVariableTarget.User);
+                    options.ClientSecret = Environment.GetEnvironmentVariable("GITHUB_SECRET", EnvironmentVariableTarget.User); ;
                     options.Scope.Add("user:email");
                 })
                 .AddLocalApi(options =>

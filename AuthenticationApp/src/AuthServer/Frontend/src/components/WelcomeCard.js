@@ -13,7 +13,7 @@ const WelcomeCard = () => {
     <Container>
       <Section>
         <SectionHeadline>Welcome!</SectionHeadline>
-        <SectionDescription>This is a public route</SectionDescription>
+        <SectionDescription>You can check your profile for now.</SectionDescription>
       </Section>
     </Container>
   )
