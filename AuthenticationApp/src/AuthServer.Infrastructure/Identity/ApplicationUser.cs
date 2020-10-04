@@ -5,5 +5,6 @@ namespace AuthServer.Infrastructure.Identity
 {
     public class ApplicationUser : IdentityUser
     {
+
     }
 }

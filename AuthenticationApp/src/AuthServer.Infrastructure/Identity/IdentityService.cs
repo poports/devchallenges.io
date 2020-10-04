@@ -1,8 +1,11 @@
 ﻿using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Infrastructure.Common.Models;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -12,9 +15,11 @@ namespace AuthServer.Infrastructure.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
+
         public IdentityService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
+
         }
 
         public async Task<string> GetUserNameAsync(string userId)
@@ -43,6 +48,12 @@ namespace AuthServer.Infrastructure.Identity
             return (result.ToApplicationResult(), user.Id);
         }
 
+        public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user) {
+            var result = await _userManager.GetClaimsAsync(user);
+
+            return result;
+        }
+
         public async Task<Result> DeleteUserAsync(string userId)
         {
             var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
@@ -61,5 +72,15 @@ namespace AuthServer.Infrastructure.Identity
 
             return result.ToApplicationResult();
         }
+
+        public async Task<Result> AddClaimAsync(ApplicationUser user, Claim claim)
+        {
+            var result = await _userManager.AddClaimAsync(user, claim);
+
+            return result.ToApplicationResult();
+        }
+
+
+
     }
 }

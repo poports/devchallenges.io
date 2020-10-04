@@ -1,0 +1,125 @@
+﻿@page
+@model AuthServer.Pages.Account.Manage.IndexModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<!-- Section -->
+<section class="w-full lg:w-2/3">
+    <partial name="_StatusMessage" for="StatusMessage" />
+    <div class="p-8 mt-6 lg:mt-0 rounded shadow bg-white rounded-lg">
+        <h1 class="font-bold break-normal text-gray-700 px-2 text-2xl mt-12 lg:mt-0">Change Info</h1>
+        <p class="text-gray-700 mb-12 px-2 text-sm tracking-tight">Changes will be reflected to every services</p>
+
+        <form enctype="multipart/form-data" method="post">
+            <div class="lg:flex mb-6 lg:items-center">
+                <div class="lg:w-1/4">
+                    <label class="text-gray-600 font-semibold md:text-left text-sm mb-3 md:mb-0 pr-4 uppercase"> Photo </label>
+                </div>
+                <div class="lg:w-3/4">
+                    @*<a asp-page="ChangePhoto" class="uppercase text-sm tracking-normal text-blue-500 font-semibold hover:text-accent">Change Photo</a>*@
+
+                    <label class="h-24 w-24 flex flex-col items-center bg-gray-200 rounded-lg text-gray-200 shadow-lg tracking-wide uppercase border-2 border-blue-500 cursor-pointer hover:bg-blue-200 hover:text-blue-500">
+                        <img asp-for="Model.Input.Photo" class="h-full w-full object-cover rounded-lg" src="@Model.Photo" id="output" />
+                            <svg class="absolute my-8 w-8 h-8" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="12" cy="12" r="3.2" fill="currentColor"></circle>
+                            <path
+                                fill="currentColor"
+                                d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"
+                            ></path>
+                            </svg>
+                        <input name="file" type="file" class="hidden" accept=".gif,.jpg,.jpeg,.png" onchange="loadFile(event)" />
+                    </label>
+                </div>
+            </div>
+            <div class="lg:flex mb-6 lg:items-center lg:mr-12">
+                <div class="lg:w-1/4">
+                    <label asp-for="Input.Email" class="text-gray-600 font-semibold md:text-left text-sm mb-3 md:mb-0 pr-4 uppercase"> </label>
+                </div>
+                <div class="lg:w-3/4">
+                    <span asp-for="Input.Email" class="w-full px-4 h-10 " type="text">@Model.Input.Email</span>
+                </div>
+            </div>
+
+            <div class="lg:flex mb-6 lg:items-center lg:mr-12">
+                <div class="lg:w-1/4">
+                    <label asp-for="Input.FullName" class="text-gray-600 font-semibold md:text-left text-sm mb-3 md:mb-0 pr-4 uppercase"> </label>
+                </div>
+                <div class="lg:w-3/4">
+                    <input asp-for="Input.FullName" class="w-full px-4 bg-gray-100 h-10 rounded-lg border border-gray-500 focus:border-blue-400" type="text" />
+                    <span asp-validation-for="Input.FullName" class="text-red-500 font-light text-xs"></span>
+                </div>
+            </div>
+
+            <div class="lg:flex mb-6 lg:items-center lg:mr-12">
+                <div class="lg:w-1/4">
+                    <label asp-for="Input.Bio" class="text-gray-600 font-semibold md:text-left text-sm mb-3 md:mb-0 pr-4 uppercase"> </label>
+                </div>
+                <div class="lg:w-3/4">
+                    <textarea asp-for="Input.Bio" class="w-full py-2 px-4 bg-gray-100 rounded-lg border border-gray-500 focus:border-blue-400"></textarea>
+                    <span asp-validation-for="Input.Bio" class="text-red-500 font-light text-xs"></span>
+                </div>
+            </div>
+
+            <div class="lg:flex mb-6 lg:items-center lg:mr-12">
+                <div class="lg:w-1/4">
+                    <label asp-for="Input.PhoneNumber" class="text-gray-600 font-semibold md:text-left text-sm mb-3 md:mb-0 pr-4 uppercase"> </label>
+                </div>
+                <div class="lg:w-3/4">
+                    <input asp-for="Input.PhoneNumber" class="w-full px-4 bg-gray-100 h-10 rounded-lg border border-gray-500 focus:border-blue-400" type="text" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-red-500 font-light text-xs"></span>
+                </div>
+            </div>
+
+            <div class="lg:flex mb-6 lg:items-center lg:mr-12">
+                <div class="lg:w-1/4">
+                    <label asp-for="Input.ContactEmail" class="text-gray-600 font-semibold md:text-left text-sm mb-3 md:mb-0 pr-4 uppercase"> </label>
+                </div>
+                <div class="lg:w-3/4">
+                    <input asp-for="Input.ContactEmail" class="w-full px-4 bg-gray-100 h-10 rounded-lg border border-gray-500 focus:border-blue-400" type="text" />
+                    <span asp-validation-for="Input.ContactEmail" class="text-red-500 font-light text-xs"></span>
+                </div>
+            </div>
+
+            <div class="lg:flex mb-6 lg:items-center mb-12">
+                <div class="lg:w-1/4">
+                    <label class="text-gray-600 font-semibold md:text-left text-sm mb-3 md:mb-0 pr-4 uppercase" for="profile-email"> Password </label>
+                </div>
+                <div class="lg:w-3/4">
+                    <a asp-page="./ChangePassword" class="uppercase text-sm tracking-normal text-blue-500 font-semibold hover:text-accent">Change Password</a>
+                </div>
+            </div>
+
+            <div class="lg:flex md:items-center">
+                <div class="lg:w-1/4"></div>
+                <div class="lg:w-3/4 flex justify-end">
+                    <a asp-controller="profile" asp-action="Index" class="tracking-wider border border-blue-500  bg-transparent hover:bg-blue-400 focus:outline-none hover:text-white text-blue-500 font-bold py-2 px-8 rounded mx-2">
+                        Back
+                    </a>
+                    <button class="tracking-wider shadow bg-blue-700 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-8 rounded mr-10"
+                            type="submit">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="text-gray-500 flex justify-between m-2">
+        <span>poports</span>
+        <span>devchallenges.io</span>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+}
+
+
+

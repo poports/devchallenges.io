@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 namespace AuthServer.Infrastructure.Common
 {
+    public interface IHasDomainEvent
+    {
+        public List<DomainEvent> DomainEvents { get; set; }
+    }
+
     public abstract class DomainEvent
     {
-        public interface IHasDomainEvent
-        {
-            public List<DomainEvent> DomainEvents { get; set; }
-        }
+
 
         protected DomainEvent()
         {

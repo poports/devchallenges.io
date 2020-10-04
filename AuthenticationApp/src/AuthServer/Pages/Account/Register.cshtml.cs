@@ -1,4 +1,5 @@
 using AuthServer.Infrastructure.Common.Interfaces;
+using AuthServer.Infrastructure.Common.Models;
 using AuthServer.Infrastructure.Identity;
 using AuthServer.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -10,17 +11,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
+
 namespace AuthServer.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        IIdentityService _identityService;
-        SignInManager<ApplicationUser> _signInManager;
-        public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager)
+        private readonly IIdentityService _identityService;
+        private readonly IUserProfileService _profileService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+         public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager, IUserProfileService profileService)
         {
             _identityService = identityService;
-            _signInManager = signInManager; 
+            _signInManager = signInManager;
+            _profileService = profileService;
         }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -38,24 +43,37 @@ namespace AuthServer.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/authentication/login-callback");
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                
-                var action = await _identityService.CreateUserAsync(Input.Email, Input.Password);
-                if (action.Result.Succeeded) {
-                    var user = await _identityService.GetUserAsync(action.UserId);
+                var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password);
+
+                var profile = new UserProfile()
+                {
+                    UserId = UserId,
+                    FullName = string.Empty,
+                    Bio = string.Empty,
+                    Photo = string.Empty
+                };
+
+                var profileResult = await _profileService.CreateProfile(profile);
+
+                if (Result.Succeeded && profileResult != null ) {
+                    var user = await _identityService.GetUserAsync(UserId);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
 
-                foreach (var error in action.Result.Errors)
+                if (profileResult == null) {
+                    ModelState.AddModelError(string.Empty, "Error adding profile");
+                }
+                foreach (var error in Result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
-            }
-
+            } 
             // If we got this far, something failed, redisplay form
             return Page();
         }

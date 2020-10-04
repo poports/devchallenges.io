@@ -2,14 +2,20 @@
 using AuthServer.Infrastructure.Data;
 using AuthServer.Infrastructure.Identity;
 using AuthServer.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Extensions;
+using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 using System.Reflection;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace AuthServer.Infrastructure
 {
@@ -17,31 +23,69 @@ namespace AuthServer.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            var migrationsAssembly = typeof(DependencyInjection).GetTypeInfo().Assembly.GetName().Name;
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options
                     .ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
                     .UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-
             services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
 
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders(); ;
 
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            services.AddIdentityServer(options => {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
 
-            services.AddTransient<IIdentityService, IdentityService>();
+                // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+                options.EmitStaticAudienceClaim = true;
+            })
+            .AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
+            })
+            .AddOperationalStore(options =>
+            {
+                options.ConfigureDbContext = b => b.UseSqlite(configuration.GetConnectionString("DefaultConnection"), sql => sql.MigrationsAssembly(migrationsAssembly));
+                //this part is optional
+                options.EnableTokenCleanup = true;
+                options.TokenCleanupInterval = 300; // interval in seconds
+            })
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddDeveloperSigningCredential();
 
             services.AddAuthentication()
-               .AddIdentityServerJwt();
+                .AddGitHub(options =>
+                {
+                    options.ClientId = Environment.GetEnvironmentVariable("GITHUB_ID", EnvironmentVariableTarget.User);
+                    options.ClientSecret = Environment.GetEnvironmentVariable("GITHUB_SECRET", EnvironmentVariableTarget.User); ;
+                    options.Scope.Add("user:email");
+                })
+                .AddLocalApi(options =>
+                {
+                    options.ExpectedScope = "api.read";
+                });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("api.read", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
+            services.AddTransient<IIdentityService, IdentityService>();
             services.Configure<IdentityOptions>(options =>
             {
-                //demo
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
                 options.Password.RequireLowercase = false;
@@ -49,8 +93,58 @@ namespace AuthServer.Infrastructure
                 options.Password.RequireUppercase = false;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             return services;
+        }
+        public static IApplicationBuilder InitializeDatabase(this IApplicationBuilder app)
+        {
+            ////https://github.com/IdentityServer/IdentityServer4/issues/4535
+            //app.Use(async (ctx, next) =>
+            //{
+            //    ctx.SetIdentityServerOrigin("https://rc-auth-app.herokuapp.com");
+            //    await next();
+            //});
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Config.Clients)
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.IdentityResources.Any())
+                {
+                    foreach (var resource in Config.IdentityResources)
+                    {
+                        context.IdentityResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiScopes.Any())
+                {
+                    foreach (var resource in Config.ApiScopes)
+                    {
+                        context.ApiScopes.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+            }
+            return app;
         }
     }
 }

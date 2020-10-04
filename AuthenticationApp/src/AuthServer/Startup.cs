@@ -3,6 +3,9 @@ using AuthServer.Infrastructure.Common.Interfaces;
 using AuthServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,16 +22,34 @@ namespace AuthServer
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSameSiteCookiePolicy();
+            
+            services.AddControllers();
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
             services.AddInfrastructure(Configuration);
+
+            services.AddRazorPages();
+
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
-            services.AddControllers();
-            services.AddRazorPages();
+            services.AddSameSiteCookiePolicy();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "Frontend/build";
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders();
+
+            app.InitializeDatabase();
             app.UseCookiePolicy();
 
             if (env.IsDevelopment())
@@ -40,17 +61,37 @@ namespace AuthServer
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
             app.UseRouting();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseCors("api.read");
+            //app.UseHttpsRedirection();
 
             app.UseIdentityServer();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
+                endpoints.MapDefaultControllerRoute();
             });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "Frontend";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
+
+
 
         }
     }
