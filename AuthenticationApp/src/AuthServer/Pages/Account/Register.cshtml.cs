@@ -21,7 +21,7 @@ namespace AuthServer.Pages.Account
         private readonly IIdentityService _identityService;
         private readonly IUserProfileService _profileService;
         private readonly SignInManager<ApplicationUser> _signInManager;
-         public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager, IUserProfileService profileService)
+        public RegisterModel(IIdentityService identityService, SignInManager<ApplicationUser> signInManager, IUserProfileService profileService)
         {
             _identityService = identityService;
             _signInManager = signInManager;
@@ -43,7 +43,7 @@ namespace AuthServer.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/authentication/login-callback");
+            returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -60,20 +60,22 @@ namespace AuthServer.Pages.Account
 
                 var profileResult = await _profileService.CreateProfile(profile);
 
-                if (Result.Succeeded && profileResult != null ) {
+                if (Result.Succeeded && profileResult != null)
+                {
                     var user = await _identityService.GetUserAsync(UserId);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
 
-                if (profileResult == null) {
+                if (profileResult == null)
+                {
                     ModelState.AddModelError(string.Empty, "Error adding profile");
                 }
                 foreach (var error in Result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
                 }
-            } 
+            }
             // If we got this far, something failed, redisplay form
             return Page();
         }
