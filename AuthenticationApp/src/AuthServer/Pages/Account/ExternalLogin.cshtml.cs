@@ -67,7 +67,7 @@ namespace AuthServer.Pages.Account
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = Url.Content("~/"); //callback fix attempt
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
