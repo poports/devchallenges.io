@@ -1,3 +1,0 @@
-dotnet ef migrations add "Initial" --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj --output-dir Data/Migrations --context ApplicationDbContext
-dotnet ef migrations add "PersistedGrant" --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj --output-dir Data/Migrations --context PersistedGrantDbContext
-dotnet ef migrations add "Configuration" --project src/AuthServer.Infrastructure/AuthServer.Infrastructure.csproj --startup-project src/AuthServer/AuthServer.csproj --output-dir Data/Migrations --context ConfigurationDbContext
