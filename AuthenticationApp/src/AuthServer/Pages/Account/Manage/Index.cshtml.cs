@@ -119,7 +119,9 @@ namespace AuthServer.Pages.Account.Manage
             string result = "";
             using var image = Image.Load(file.OpenReadStream());
 
-            image.Mutate(x => x.Resize(256,256));
+            var width = 256;
+
+            image.Mutate(x => x.Resize(width, GetHeight(width, image.Width, image.Height) ));
 
             using (var outputStream = new MemoryStream())
             {
@@ -130,5 +132,13 @@ namespace AuthServer.Pages.Account.Manage
 
             return result;
         }
+
+        private int GetHeight(int width, int sourceWidth, int sourceHeight) {
+
+            int result = (sourceHeight * width) / sourceWidth;
+            return result;
+        }
     }
+
 }
+
