@@ -109,7 +109,7 @@ namespace AuthServer.Infrastructure
             //app.Use(async (ctx, next) =>
             //{
             //    ctx.SetIdentityServerOrigin("https://rc-auth-app.herokuapp.com");
-            //    ctx.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://devchallenges.io");
+            //    ctx.Response.Headers.Add("Content-Security-Policy", "frame-ancestors 'self' https://devchallenges.io/;");
             //    await next();
             //});
 
