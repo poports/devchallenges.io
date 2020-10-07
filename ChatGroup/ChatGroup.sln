@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGroup", "src\ChatGroup\ChatGroup.csproj", "{F35D8B48-59EE-4A17-9E74-1BF2A4CA5101}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGroup.Application", "src\ChatGroup.Application\ChatGroup.Application.csproj", "{BC5973D8-9F90-46F5-94ED-89A3BEAB6089}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGroup.Application", "src\ChatGroup.Application\ChatGroup.Application.csproj", "{BC5973D8-9F90-46F5-94ED-89A3BEAB6089}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatGroup.Infrastructure", "src\ChatGroup.Infrastructure\ChatGroup.Infrastructure.csproj", "{4054A9CE-F96C-4206-A926-D5BFC3AE135B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48CF6E1E-C110-4585-8319-C155DE982733}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,18 @@ Global
 		{BC5973D8-9F90-46F5-94ED-89A3BEAB6089}.Release|x64.Build.0 = Release|Any CPU
 		{BC5973D8-9F90-46F5-94ED-89A3BEAB6089}.Release|x86.ActiveCfg = Release|Any CPU
 		{BC5973D8-9F90-46F5-94ED-89A3BEAB6089}.Release|x86.Build.0 = Release|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Debug|x64.Build.0 = Debug|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Debug|x86.Build.0 = Debug|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Release|x64.ActiveCfg = Release|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Release|x64.Build.0 = Release|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Release|x86.ActiveCfg = Release|Any CPU
+		{4054A9CE-F96C-4206-A926-D5BFC3AE135B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
