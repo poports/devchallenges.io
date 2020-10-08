@@ -10,4 +10,13 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CharGroup.Domain\CharGroup.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
