@@ -1,0 +1,2 @@
+dotnet ef migrations add "Initial" --project src/ChatGroup.Infrastructure/ChatGroup.Infrastructure.csproj --startup-project src/ChatGroup/ChatGroup.csproj --output-dir Data/Migrations --context ChatGroupDbContext
+pause
