@@ -1,4 +1,6 @@
-﻿using ChatGroup.Infrastructure.Data;
+﻿using ChatGroup.Application.Common.Interfaces;
+using ChatGroup.Domain.Common;
+using ChatGroup.Infrastructure.Data;
 using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
@@ -7,8 +9,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ChatGroup.Infrastructure
 {
@@ -36,26 +36,32 @@ namespace ChatGroup.Infrastructure
             {
                 options.EnableMetrics = true;
             })
-
             .AddSystemTextJson()
             .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
 
+            services.AddScoped<IChannelRepository, ChannelRepository>();   
+            
+            services.AddHttpContextAccessor();
             return services;
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
-            // add http for Schema at default url /graphql
             app.UseGraphQL<ISchema>();
-
-            // use graphql-playground at default url /ui/playground
             app.UseGraphQLPlayground();
+
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ChatGroupDbContext>();
+                context.Seed();
+            }
 
             return app;
         }
 
         private static string GetConnectionString() {
-            var uriString = Environment.GetEnvironmentVariable("POSTGRES_URL", EnvironmentVariableTarget.User);
+            var uriString = Environment.GetEnvironmentVariable("POSTGRES_URL");
             var uri = new Uri(uriString);
             var db = uri.AbsolutePath.Trim('/');
             var user = uri.UserInfo.Split(':')[0];

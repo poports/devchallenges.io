@@ -18,10 +18,8 @@ namespace ChatGroup
         }
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddApplication(Configuration);
             services.AddInfrastructure(Configuration);
-
+            services.AddApplication(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

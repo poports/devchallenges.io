@@ -1,9 +1,9 @@
-﻿using CharGroup.Domain.Common;
+﻿using ChatGroup.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CharGroup.Domain.Entities
+namespace ChatGroup.Domain.Entities
 {
     public class Channel : AuditableEntity
     {

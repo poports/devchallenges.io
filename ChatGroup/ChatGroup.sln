@@ -13,6 +13,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48CF6E1E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGroup.Domain", "src\CharGroup.Domain\ChatGroup.Domain.csproj", "{7FD2C2EE-EFA5-44B7-898D-1CB65539DC18}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{7C931055-E923-4BA8-9421-D9D8E0C8572A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{61591AD4-4035-4E42-AF26-771B21470FE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +82,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BC5973D8-9F90-46F5-94ED-89A3BEAB6089} = {61591AD4-4035-4E42-AF26-771B21470FE0}
+		{7FD2C2EE-EFA5-44B7-898D-1CB65539DC18} = {61591AD4-4035-4E42-AF26-771B21470FE0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6063C6B6-63A5-455E-9AD5-0FD6FC518713}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CharGroup.Domain.Common
+namespace ChatGroup.Domain.Common
 {
     public abstract class AuditableEntity
     {
