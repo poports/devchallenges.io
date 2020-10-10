@@ -5,6 +5,7 @@ using AuthServer.Infrastructure.Services;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Extensions;
+using IdentityServer4.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -100,6 +101,8 @@ namespace AuthServer.Infrastructure
                 options.LogoutPath = "/Account/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
+
+            services.AddTransient<IProfileService, IdentityClaimsProfileService>();
 
             return services;
         }

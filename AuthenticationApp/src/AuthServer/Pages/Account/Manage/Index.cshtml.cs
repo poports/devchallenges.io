@@ -98,7 +98,7 @@ namespace AuthServer.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var email = await _userManager.GetEmailAsync(user);
-            var profile = _profileService.GetProfile(user.Id);
+            var profile = await _profileService.GetProfile(user.Id);
 
             Username = userName;
             Photo = profile.Photo;

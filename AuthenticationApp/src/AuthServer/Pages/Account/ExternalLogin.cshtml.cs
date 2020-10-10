@@ -123,7 +123,7 @@ namespace AuthServer.Pages.Account
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-
+                user.Email = Input.Email;
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

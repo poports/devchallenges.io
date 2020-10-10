@@ -32,7 +32,7 @@ namespace AuthServer.Api
             //var userId = User.FindFirstValue(JwtClaimTypes.Subject);
             var userId = User.Identity.GetSubjectId();
             var user = await _identityService.GetUserAsync(userId);
-            var profile  = _profileService.GetProfile(userId);
+            var profile  = await _profileService.GetProfile(userId);
 
             var result = new List<ApiResultItem>();
             result.Add(new ApiResultItem() { Name = "name", Value = profile.FullName });
@@ -44,16 +44,22 @@ namespace AuthServer.Api
         }
 
         [Route("api/photo")]
-        public IActionResult GetPhoto()
+        public async Task<IActionResult> GetPhoto()
         {
             var userId = User.Identity.GetSubjectId();
-            var profile = _profileService.GetProfile(userId);
+            var profile = await _profileService.GetProfile(userId);
 
             var result = new
             {
                 photo = profile.Photo
             };
             return new JsonResult(result);
+        }
+
+        [Route("api/claims")]
+        public IActionResult GetClaims()
+        {
+            return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
         }
 
     }

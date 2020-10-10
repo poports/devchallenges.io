@@ -11,6 +11,7 @@ namespace AuthServer.Infrastructure
             new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
+                new IdentityResources.Email(),
                 new IdentityResources.Profile(),
             };
 
@@ -59,6 +60,7 @@ namespace AuthServer.Infrastructure
                         {
                             IdentityServerConstants.StandardScopes.OpenId,
                             IdentityServerConstants.StandardScopes.Profile,
+                            IdentityServerConstants.StandardScopes.Email,
                             "api.read"
                         }
                     }
