@@ -7,19 +7,21 @@ namespace ChatGroup.Infrastructure.Data
 {
     public class ChatGroupDbContext : DbContext
     {
-        private readonly ILoggerFactory _loggerFactory;
+        //private readonly ILoggerFactory _loggerFactory;
 
         public DbSet<Channel> Channels { get; set; }
-        public ChatGroupDbContext(DbContextOptions<ChatGroupDbContext> options, ILoggerFactory loggerFactory) 
-            : base(options) 
+        //public ChatGroupDbContext(DbContextOptions<ChatGroupDbContext> options, ILoggerFactory loggerFactory) 
+        public ChatGroupDbContext(DbContextOptions<ChatGroupDbContext> options)
+
+                    : base(options) 
         {
-            _loggerFactory = loggerFactory;
+            //_loggerFactory = loggerFactory;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLoggerFactory(_loggerFactory);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseLoggerFactory(_loggerFactory);
+        //}
 
 
     }

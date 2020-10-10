@@ -10,7 +10,8 @@ namespace ChatGroup.Application.Api
         public ChatGroupSchema(IServiceProvider provider) 
             : base(provider)
         {
-            Query = provider.GetRequiredService<ChatGroupQuery>().As<IObjectGraphType>(); 
+            Query = provider.GetRequiredService<ChatGroupQuery>().As<IObjectGraphType>();
+            Mutation = provider.GetRequiredService<ChatGroupMutation>().As<IObjectGraphType>();
         }
     }
 }

@@ -9,5 +9,6 @@ namespace ChatGroup.Application.Common.Interfaces
     {
         Task<Channel> GetById(int id);
         Task<List<Channel>> ListAll();
+        Task<Channel> Add(Channel channel);
     }
 }

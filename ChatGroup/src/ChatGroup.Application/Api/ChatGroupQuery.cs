@@ -14,6 +14,9 @@ namespace ChatGroup.Application.Api
             FieldAsync<ChannelType>("channel",
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
                 resolve: async context => await contextServiceLocator.ChannelRepository.GetById(context.GetArgument<int>("id")));
+
+            FieldAsync<ListGraphType<ChannelType>>("channels",
+                resolve: async context => await contextServiceLocator.ChannelRepository.ListAll());
         }
 
     }

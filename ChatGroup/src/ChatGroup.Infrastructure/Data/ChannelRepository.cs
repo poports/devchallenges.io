@@ -15,15 +15,25 @@ namespace ChatGroup.Infrastructure.Data
             _dbContext = dbContext;
 
         }
+
+        public async Task<Channel> Add(Channel channel)
+        {
+            await _dbContext.Channels.AddAsync(channel);
+            await _dbContext.SaveChangesAsync();
+            return channel;
+        }
+
         public async Task<Channel> GetById(int id)
         {
-            return await _dbContext.Set<Channel>().FindAsync(id);
+            return await _dbContext.Channels.FindAsync(id);
         }
 
         public async Task<List<Channel>> ListAll()
         {
-            return await _dbContext.Set<Channel>().ToListAsync();
+            return await _dbContext.Channels.ToListAsync();
         }
+
+        
 
     }
 }
