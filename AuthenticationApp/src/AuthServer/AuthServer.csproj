@@ -37,12 +37,7 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   
-  <ItemGroup>
-    <None Remove="Frontend\.env" />
-    <None Remove="Frontend\.env.production.local" />
-    <None Remove="tempkey.jwk" />
-  </ItemGroup>
-  
+ 
   <ItemGroup>
     <Folder Include="Frontend\src\images\" />
   </ItemGroup>

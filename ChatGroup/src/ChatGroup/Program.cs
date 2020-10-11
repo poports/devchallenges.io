@@ -20,8 +20,8 @@ namespace ChatGroup
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 //.WriteTo.File(
-                //    @"\Logs",
-                //    fileSizeLimitBytes: 1_000_000,
+                //    @"Logs\chatgroup_logs.txt",
+                //    fileSizeLimitBytes: 10_000_000,
                 //    rollOnFileSizeLimit: true,
                 //    shared: true,
                 //    flushToDiskInterval: TimeSpan.FromSeconds(1))

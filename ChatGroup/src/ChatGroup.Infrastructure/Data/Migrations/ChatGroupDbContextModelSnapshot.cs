@@ -42,6 +42,9 @@ namespace ChatGroup.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Channels");
                 });
 #pragma warning restore 612, 618

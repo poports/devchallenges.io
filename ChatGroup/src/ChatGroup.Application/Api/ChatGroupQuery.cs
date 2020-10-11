@@ -2,6 +2,8 @@
 using ChatGroup.Application.Helpers;
 using GraphQL;
 using GraphQL.Types;
+using System.Linq;
+
 
 namespace ChatGroup.Application.Api
 {
@@ -13,10 +15,15 @@ namespace ChatGroup.Application.Api
 
             FieldAsync<ChannelType>("channel",
                 arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
-                resolve: async context => await contextServiceLocator.ChannelRepository.GetById(context.GetArgument<int>("id")));
+                resolve: async context =>
+                {
+                    var id = context.GetArgument<int>("id");
+                    var result = await contextServiceLocator.Channels.Filter(x => x.Id == id);
+                    return result.First();
+                });
 
             FieldAsync<ListGraphType<ChannelType>>("channels",
-                resolve: async context => await contextServiceLocator.ChannelRepository.ListAll());
+                resolve: async context => await contextServiceLocator.Channels.GetAll());
         }
 
     }

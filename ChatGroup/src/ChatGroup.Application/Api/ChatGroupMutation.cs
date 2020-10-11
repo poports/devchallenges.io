@@ -18,7 +18,11 @@ namespace ChatGroup.Application.Api
                 resolve: async context =>
                 {
                     var input = context.GetArgument<Channel>("input");
-                    return await contextServiceLocator.ChannelRepository.Add(input);
+                    
+                    await contextServiceLocator.Channels.Add(input);
+                    await contextServiceLocator.Channels.SaveChanges();
+
+                    return input;
                 });
 
         }

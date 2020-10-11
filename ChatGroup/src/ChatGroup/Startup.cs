@@ -32,9 +32,9 @@ namespace ChatGroup
             {
                 app.UseHsts();
             }
-
+            app.UseHttpsRedirection();
+         
             app.UseInfrastructure();
-
         }
     }
 }

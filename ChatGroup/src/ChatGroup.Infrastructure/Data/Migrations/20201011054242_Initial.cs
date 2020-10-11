@@ -24,6 +24,12 @@ namespace ChatGroup.Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_Channels", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Channels_Name",
+                table: "Channels",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

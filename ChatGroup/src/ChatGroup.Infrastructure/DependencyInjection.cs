@@ -4,10 +4,12 @@ using ChatGroup.Infrastructure.Data;
 using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using System;
 
 namespace ChatGroup.Infrastructure
@@ -35,12 +37,17 @@ namespace ChatGroup.Infrastructure
             services.AddGraphQL(options =>
             {
                 options.EnableMetrics = true;
+                options.UnhandledExceptionDelegate = ctx =>
+                {
+                    if (ctx.Exception.InnerException is SqliteException || ctx.Exception.InnerException is NpgsqlException)
+                        ctx.ErrorMessage = $"A database error has occurred.";
+                };
             })
             .AddSystemTextJson()
             .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
 
-            services.AddScoped<IChannelRepository, ChannelRepository>();   
-            
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
             services.AddHttpContextAccessor();
             return services;
         }
