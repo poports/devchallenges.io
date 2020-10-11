@@ -1,9 +1,11 @@
 ﻿using ChatGroup.Application.Api;
 using ChatGroup.Application.Api.Types;
+using ChatGroup.Application.Extensions;
 using ChatGroup.Application.Helpers;
 using GraphQL.Types;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace ChatGroup.Application
 {
@@ -17,6 +19,11 @@ namespace ChatGroup.Application
             services.AddSingleton<ChatGroupQuery>();
             services.AddSingleton<ChatGroupMutation>();
             services.AddSingleton<ISchema, ChatGroupSchema>();
+
+            services.AddGraphQLAuth((_, s) =>
+            {
+                _.AddPolicy("UserPolicy", p => p.RequireClaim(ClaimTypes.Role, "User"));
+            });
 
             return services;
         }

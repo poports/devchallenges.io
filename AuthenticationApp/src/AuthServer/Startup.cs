@@ -71,7 +71,7 @@ namespace AuthServer
 
             app.UseIdentityServer();
             app.UseAuthentication();
-            app.UseAuthorization();
+
 
 
 

@@ -1,8 +1,9 @@
-﻿using ChatGroup.Application.Common.Interfaces;
-using ChatGroup.Domain.Common;
+﻿using ChatGroup.Application;
+using ChatGroup.Application.Common.Interfaces;
 using ChatGroup.Infrastructure.Data;
 using GraphQL.Server;
 using GraphQL.Types;
+using GraphQL.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using System;
+using GraphQL.Server.Transports.AspNetCore;
 
 namespace ChatGroup.Infrastructure
 {
@@ -54,9 +56,12 @@ namespace ChatGroup.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
+            var validationRules = app.ApplicationServices.GetServices<IValidationRule>();
+
             app.UseGraphQL<ISchema>();
             app.UseGraphQLPlayground();
 
+           
 
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {

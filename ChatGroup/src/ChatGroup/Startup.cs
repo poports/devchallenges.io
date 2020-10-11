@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ChatGroup
 {
@@ -18,6 +19,18 @@ namespace ChatGroup
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            // accepts any access token issued by identity server
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "https://localhost:44343";
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+
             services.AddInfrastructure(Configuration);
             services.AddApplication(Configuration);
         }
@@ -33,7 +46,9 @@ namespace ChatGroup
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-         
+
+            app.UseAuthentication();
+
             app.UseInfrastructure();
         }
     }

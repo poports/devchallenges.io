@@ -1,6 +1,7 @@
 ﻿using ChatGroup.Application.Api.Types;
 using ChatGroup.Application.Helpers;
 using GraphQL;
+using GraphQL.Authorization;
 using GraphQL.Types;
 using System.Linq;
 
@@ -23,7 +24,7 @@ namespace ChatGroup.Application.Api
                 });
 
             FieldAsync<ListGraphType<ChannelType>>("channels",
-                resolve: async context => await contextServiceLocator.Channels.GetAll());
+                resolve: async context => await contextServiceLocator.Channels.GetAll()).AuthorizeWith("UserPolicy"); ;
         }
 
     }
