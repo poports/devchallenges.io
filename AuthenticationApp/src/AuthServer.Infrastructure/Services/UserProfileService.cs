@@ -27,7 +27,7 @@ namespace AuthServer.Infrastructure.Services
         {
             var user = await _userManager.FindByIdAsync(profile.UserId);
             await _userManager.AddClaimAsync(user, new Claim("fullName", profile.FullName ?? string.Empty));
-
+            await _userManager.AddClaimAsync(user, new Claim("role", "User"));
 
             var entity = new UserProfile
             {

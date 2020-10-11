@@ -41,7 +41,7 @@ namespace AuthServer.Infrastructure.Services
             claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email ?? ""));
 
             // note: to dynamically add roles (ie. for users other than consumers - simply look them up by sub id            
-            //claims.Add(new Claim(ClaimTypes.Role, principal.Claims.First(c => c.Type == "role").Value)); // need this for role-based authorization - https://stackoverflow.com/questions/40844310/role-based-authorization-with-identityserver4
+            claims.Add(new Claim(ClaimTypes.Role, principal.Claims.First(c => c.Type == "role").Value)); // need this for role-based authorization - https://stackoverflow.com/questions/40844310/role-based-authorization-with-identityserver4
 
             context.IssuedClaims = claims;
         }
