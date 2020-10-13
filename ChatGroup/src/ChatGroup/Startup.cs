@@ -2,6 +2,7 @@ using ChatGroup.Application;
 using ChatGroup.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,6 +34,12 @@ namespace ChatGroup
 
             services.AddInfrastructure(Configuration);
             services.AddApplication(Configuration);
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,11 +52,23 @@ namespace ChatGroup
             {
                 app.UseHsts();
             }
+            app.UseSpaStaticFiles();
             app.UseHttpsRedirection();
+           
 
             app.UseAuthentication();
-
             app.UseInfrastructure();
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
+
         }
     }
 }
