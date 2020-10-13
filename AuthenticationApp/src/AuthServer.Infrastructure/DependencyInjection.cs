@@ -62,7 +62,7 @@ namespace AuthServer.Infrastructure
                 options.TokenCleanupInterval = 300; // interval in seconds
             })
             .AddAspNetIdentity<ApplicationUser>()
-            .AddDeveloperSigningCredential();
+            .AddDeveloperSigningCredential(); //developer key for demo only
 
             services.AddAuthentication()
                 .AddGitHub(options =>

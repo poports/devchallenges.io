@@ -21,7 +21,7 @@ namespace ChatGroup
                 .Enrich.FromLogContext()
                 //.WriteTo.File(
                 //    @"Logs\chatgroup_logs.txt",
-                //    fileSizeLimitBytes: 10_000_000,
+                //    fileSizeLimitBytes: 1_000_000,
                 //    rollOnFileSizeLimit: true,
                 //    shared: true,
                 //    flushToDiskInterval: TimeSpan.FromSeconds(1))

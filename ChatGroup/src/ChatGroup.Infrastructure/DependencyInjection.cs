@@ -56,8 +56,9 @@ namespace ChatGroup.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
-            var validationRules = app.ApplicationServices.GetServices<IValidationRule>();
+            //var validationRules = app.ApplicationServices.GetServices<IValidationRule>();
 
+            app.ApplicationServices.GetServices<IValidationRule>();
             app.UseGraphQL<ISchema>();
             app.UseGraphQLPlayground();
 

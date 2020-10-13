@@ -67,7 +67,7 @@ namespace AuthServer
             app.UseSpaStaticFiles();
 
             app.UseCors("api.read");
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseIdentityServer();
             app.UseAuthentication();
