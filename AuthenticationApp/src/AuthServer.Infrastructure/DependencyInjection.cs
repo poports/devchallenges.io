@@ -76,6 +76,8 @@ namespace AuthServer.Infrastructure
                 {
                     options.ExpectedScope = "api.read";
                 });
+            
+            services.AddAuthorization();
 
             services.AddCors(options =>
             {

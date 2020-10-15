@@ -22,7 +22,14 @@ namespace ChatGroup.Application
 
             services.AddGraphQLAuth((_, s) =>
             {
-                _.AddPolicy("UserPolicy", p => p.RequireClaim(ClaimTypes.Role, "User"));
+
+                _.AddPolicy("UserPolicy", p => 
+                {
+                    p.RequireAuthenticatedUser();
+                    p.RequireClaim("scope", "chat.api");
+                    p.RequireClaim(ClaimTypes.Role, "User");
+                });
+
             });
 
             return services;

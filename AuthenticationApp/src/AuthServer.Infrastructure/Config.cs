@@ -21,27 +21,17 @@ namespace AuthServer.Infrastructure
                 new ApiScope("api.read", "AuthenticationApp"),
                 new ApiScope("chat.api", "ChatGroup API")
             };
-        // public static IEnumerable<ApiResource> ApiResources =>
-        //     new List<ApiResource>
-        //     {
-        //         new ApiResource("api.read", "Demo API")
-        //         {
-        //             ApiSecrets = { new Secret("secret".Sha256()) },
-        //             Scopes = { "api.read" }
-        //         }
-        //     };
-
         public static IEnumerable<Client> Clients =>
             new List<Client>
             {
-                                // machine to machine client
+                // machine to machine client
                 new Client
                 {
                     ClientId = "ChatApi",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
-                    AllowedScopes = { "chat.api" }
+                    AllowedScopes = {"chat.api" }
                 },
                 new Client
                 {
@@ -69,6 +59,35 @@ namespace AuthServer.Infrastructure
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
+                        "api.read",
+                        "chat.api"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "ChatGoup",
+                    ClientName = "ChatGroup Client",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireClientSecret = false,
+                    RedirectUris = {
+                                        "https://rc-auth-app.herokuapp.com/authentication/login-callback",
+                                        "https://localhost:44344/authentication/login-callback",
+                                        "https://localhost:5001/authentication/login-callback"
+                                    },
+                    PostLogoutRedirectUris = {
+                                        "https://rc-auth-app.herokuapp.com/authentication/logout-callback",
+                                        "https://localhost:44344/authentication/logout-callback",
+                                        "https://localhost:5001/authentication/logout-callback"
+                                    },
+                    AllowedCorsOrigins = {
+                                        "https://rc-auth-app.herokuapp.com",
+                                        "https://localhost:44344",
+                                        "https://localhost:5001"
+                                    },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
                         "api.read",
                         "chat.api"
                     }

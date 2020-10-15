@@ -17,10 +17,6 @@
     </PackageReference>
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="app.db" CopyToOutputDirectory="Always" ExcludeFromSingleFile="true" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AuthServer.Infrastructure\AuthServer.Infrastructure.csproj" />
