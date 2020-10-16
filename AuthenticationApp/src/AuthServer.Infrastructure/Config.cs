@@ -65,24 +65,21 @@ namespace AuthServer.Infrastructure
                 },
                 new Client
                 {
-                    ClientId = "ChatGoup",
+                    ClientId = "ChatGroup",
                     ClientName = "ChatGroup Client",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
                     RedirectUris = {
-                                        "https://rc-auth-app.herokuapp.com/authentication/login-callback",
+                                        "https://rc-chat-app.herokuapp.com/authentication/login-callback",
                                         "https://localhost:44344/authentication/login-callback",
-                                        "https://localhost:5001/authentication/login-callback"
                                     },
                     PostLogoutRedirectUris = {
-                                        "https://rc-auth-app.herokuapp.com/authentication/logout-callback",
+                                        "https://rc-chat-app.herokuapp.com/authentication/logout-callback",
                                         "https://localhost:44344/authentication/logout-callback",
-                                        "https://localhost:5001/authentication/logout-callback"
                                     },
                     AllowedCorsOrigins = {
-                                        "https://rc-auth-app.herokuapp.com",
+                                        "https://rc-chat-app.herokuapp.com",
                                         "https://localhost:44344",
-                                        "https://localhost:5001"
                                     },
                     AllowedScopes =
                     {
