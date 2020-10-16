@@ -110,7 +110,7 @@ const Login = ({ action }) => {
       default:
         throw new Error(`Invalid action '${action}'`)
     }
-  })
+  }, [action])
 
   if (!!message) {
     return <div>{message}</div>

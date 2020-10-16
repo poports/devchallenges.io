@@ -33,7 +33,7 @@ const App = () => {
     const subscription = authService.subscribe(() => populateState())
     populateState()
 
-    return function cleanup() {
+    return () => {
       authService.unsubscribe(subscription)
     }
   })
