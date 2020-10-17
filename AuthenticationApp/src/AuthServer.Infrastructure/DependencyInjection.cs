@@ -69,7 +69,7 @@ namespace AuthServer.Infrastructure
                 {
                     options.ClientId = Environment.GetEnvironmentVariable("GITHUB_ID", EnvironmentVariableTarget.User);
                     options.ClientSecret = Environment.GetEnvironmentVariable("GITHUB_SECRET", EnvironmentVariableTarget.User); ;
-                    options.Scope.Add("user:email");
+                    //options.Scope.Add("user:email");
                     options.AccessDeniedPath = "/";
                 })
                 .AddLocalApi(options =>
