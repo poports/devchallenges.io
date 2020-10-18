@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Specialized;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace AuthServer.Pages.Account
 {
@@ -67,17 +69,22 @@ namespace AuthServer.Pages.Account
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = Url.Content("~/"); //callback fix attempt
+            NameValueCollection queryStringCollection = HttpUtility.ParseQueryString(returnUrl);
+            var redirectUri = queryStringCollection["redirect_uri"] ?? Url.Content("~/");
+            string returnUri = new Uri(redirectUri).GetLeftPart(UriPartial.Authority);
+
+
+            //returnUrl = Url.Content("~/"); //callback fix attempt
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                return RedirectToPage("./Login", new { ReturnUrl = returnUri });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information.";
-                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                return RedirectToPage("./Login", new { ReturnUrl = returnUri });
             }
 
             // Sign in the user with this external login provider if the user already has a login.
@@ -85,7 +92,7 @@ namespace AuthServer.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in with {LoginProvider} provider.", info.LoginProvider);
-                return LocalRedirect(returnUrl);
+                return RedirectPermanent(returnUri);
             }
             if (result.IsLockedOut)
             {
@@ -94,7 +101,7 @@ namespace AuthServer.Pages.Account
             else
             {
                 // If the user does not have an account, then ask the user to create an account.
-                ReturnUrl = returnUrl;
+                ReturnUrl = returnUri;
                 ProviderDisplayName = info.ProviderDisplayName;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
@@ -109,7 +116,7 @@ namespace AuthServer.Pages.Account
 
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             // Get the information about the user from the external login provider
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)

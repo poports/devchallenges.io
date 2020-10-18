@@ -76,7 +76,7 @@ const Login = ({ action }) => {
     }
 
     const redirectToApiAuthorizationPath = (apiAuthorizationPath) => {
-      const redirectUrl = `${window.location.origin}${apiAuthorizationPath}`
+      const redirectUrl = `${apiAuthorizationPath}`
       // It's important that we do a replace here so that when the user hits the back arrow on the
       // browser he gets sent back to where it was on the app instead of to an endpoint on this
       // component.

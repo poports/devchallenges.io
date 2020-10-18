@@ -1,14 +1,18 @@
 module.exports = {
-  future: {
-    // removeDeprecatedGapUtilities: true,
-    // purgeLayersByDefault: true,
-    // defaultLineHeights: true,
-    // standardFontWeights: true
+  dark: 'media',
+  experimental: {
+    darkModeVariant: true
   },
   purge: [],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        sans: ['Noto Sans', 'system-ui', 'sans-serif']
+      }
+    }
   },
-  variants: {},
+  variants: {
+    opacity: ['responsive', 'hover', 'focus', 'dark']
+  },
   plugins: []
 }
