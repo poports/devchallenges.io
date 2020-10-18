@@ -25,6 +25,7 @@ namespace AuthServer.Pages.Account
         }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        [TempData]
         public string ReturnUrl { get; set; }
 
         [BindProperty]

@@ -69,7 +69,7 @@ namespace AuthServer.Pages.Account
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
-            NameValueCollection queryStringCollection = HttpUtility.ParseQueryString(returnUrl);
+            NameValueCollection queryStringCollection = HttpUtility.ParseQueryString(returnUrl ?? Url.Content("~/"));
             var redirectUri = queryStringCollection["redirect_uri"] ?? Url.Content("~/");
             string returnUri = new Uri(redirectUri).GetLeftPart(UriPartial.Authority);
 

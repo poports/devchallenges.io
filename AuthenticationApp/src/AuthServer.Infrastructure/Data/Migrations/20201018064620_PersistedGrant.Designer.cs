@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthServer.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20201003082316_PersistedGrant")]
+    [Migration("20201018064620_PersistedGrant")]
     partial class PersistedGrant
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

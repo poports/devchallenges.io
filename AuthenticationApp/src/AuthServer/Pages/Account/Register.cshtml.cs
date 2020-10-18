@@ -30,6 +30,7 @@ namespace AuthServer.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        [TempData]
         public string ReturnUrl { get; set; }
 
         [BindProperty]
@@ -49,28 +50,24 @@ namespace AuthServer.Pages.Account
             if (ModelState.IsValid)
             {
                 var (Result, UserId) = await _identityService.CreateUserAsync(Input.Email, Input.Password);
-
-                var profile = new UserProfile()
+                
+                if (Result.Succeeded )
                 {
-                    UserId = UserId,
-                    FullName = string.Empty,
-                    Bio = string.Empty,
-                    Photo = string.Empty
-                };
+                    var profile = new UserProfile()
+                    {
+                        UserId = UserId,
+                        FullName = string.Empty,
+                        Bio = string.Empty,
+                        Photo = string.Empty
+                    };
 
-                var profileResult = await _profileService.CreateProfile(profile);
+                    await _profileService.CreateProfile(profile);
 
-                if (Result.Succeeded && profileResult != null)
-                {
                     var user = await _identityService.GetUserAsync(UserId);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
-
-                if (profileResult == null)
-                {
-                    ModelState.AddModelError(string.Empty, "Error adding profile");
-                }
+  
                 foreach (var error in Result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error);
