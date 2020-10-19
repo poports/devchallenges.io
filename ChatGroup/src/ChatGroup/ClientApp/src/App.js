@@ -40,13 +40,13 @@ const App = () => {
 
   return (
     <UserContext.Provider value={userContext}>
-      <div>Nav bar</div>
       <Switch>
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
         />
-        <AuthorizeRoute exact path="/" component={Home} />
+        <Route exact path="/" component={Home} />
+        <AuthorizeRoute exact path="/secure" component={Home} />
       </Switch>
     </UserContext.Provider>
   )

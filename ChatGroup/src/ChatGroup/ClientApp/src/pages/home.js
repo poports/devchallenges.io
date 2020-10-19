@@ -1,7 +1,8 @@
 import React from 'react'
+import { Layout, Aside } from './../components'
 
 const Home = () => {
-  return <div>Home</div>
+  return <Layout aside={Aside}></Layout>
 }
 
 export default Home
