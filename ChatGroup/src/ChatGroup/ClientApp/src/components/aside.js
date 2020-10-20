@@ -1,7 +1,7 @@
 import React from 'react'
 import tw, { styled } from 'twin.macro'
 
-const Sidebar = tw.aside`z-20 hidden w-64 overflow-y-auto bg-white md:block flex-shrink-0`
+const Sidebar = tw.aside`z-20 hidden w-full overflow-y-auto bg-white sm:block flex-shrink-0`
 const Container = tw.div`py-4 text-gray-500`
 const TitleLink = tw.a`ml-6 text-lg font-bold text-gray-800`
 const List = tw.ul`mt-6`
