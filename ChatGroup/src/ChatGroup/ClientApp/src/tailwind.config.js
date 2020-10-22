@@ -1,5 +1,7 @@
 module.exports = {
-  purge: [],
+  experimental: {
+    darkModeVariant: true
+  },
   theme: {
     extend: {
       fontFamily: {
@@ -9,9 +11,13 @@ module.exports = {
         default: '20rem 1fr'
       },
       gridTemplateRows: {
-        default: '2rem 1fr'
+        default: '3rem 1fr'
       }
     }
+  },
+  dark: 'class',
+  variants: {
+    opacity: ['responsive', 'hover', 'focus', 'dark']
   },
   plugins: []
 }
