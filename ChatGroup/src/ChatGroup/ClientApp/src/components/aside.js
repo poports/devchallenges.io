@@ -4,7 +4,7 @@ import tw, { styled } from 'twin.macro'
 const Sidebar = tw.aside`z-20 w-full h-full bg-white dark:bg-gray-900
   flex flex-col dark:bg-gray-900 dark:text-gray-100
 `
-const TitleContainer = tw.div`py-2 flex-none h-12 shadow-sm border-b dark:border-gray-800 shadow`
+const TitleContainer = tw.div`py-2 flex-none h-12 shadow-sm border-b dark:border-gray-800`
 const ListContainer = tw.div`pb-4 text-gray-500 overflow-y-auto flex-grow`
 const ProfileContainer = tw.div`flex-none py-4 items-center mx-2`
 
