@@ -22,9 +22,11 @@ const Main = () => {
       <MessageContainer>
         <h1>Message</h1>
       </MessageContainer>
+
       <FormContainer>
         <Form>
           <MessageInput />
+
           <Submit>Send</Submit>
         </Form>
       </FormContainer>

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGroup.Infrastructure", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48CF6E1E-C110-4585-8319-C155DE982733}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGroup.Domain", "src\CharGroup.Domain\ChatGroup.Domain.csproj", "{7FD2C2EE-EFA5-44B7-898D-1CB65539DC18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatGroup.Domain", "src\ChatGroup.Domain\ChatGroup.Domain.csproj", "{7FD2C2EE-EFA5-44B7-898D-1CB65539DC18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{7C931055-E923-4BA8-9421-D9D8E0C8572A}"
 	ProjectSection(SolutionItems) = preProject
