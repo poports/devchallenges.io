@@ -11,5 +11,7 @@ namespace ChatGroup.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public List<ChannelMember> ChannelMembers { get; set; }
+
     }
 }

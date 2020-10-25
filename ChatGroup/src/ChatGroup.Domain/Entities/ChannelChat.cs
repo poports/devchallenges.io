@@ -10,5 +10,8 @@ namespace ChatGroup.Domain.Entities
         public Guid MemberId { get; set; }
         public string Mesage { get; set; }
 
+        public Channel Channel { get; set; }
+        public Member Member { get; set; }
+
     }
 }

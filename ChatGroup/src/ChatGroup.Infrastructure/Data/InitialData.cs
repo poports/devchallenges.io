@@ -13,41 +13,31 @@ namespace ChatGroup.Infrastructure.Data
                 dbContext.Channels.Add(new Channel
                 {
                     Name = "Front-end Developers",
-                    Description = "Front-end Developers channel",
-                    CreatedBy = "System",
-                    Created = DateAndTime.Now
+                    Description = "Front-end Developers channel"
                 });
 
                 dbContext.Channels.Add(new Channel
                 {
                     Name = "Random",
-                    Description = "Random channel",
-                    CreatedBy = "System",
-                    Created = DateAndTime.Now
+                    Description = "Random channel"
                 });
 
                 dbContext.Channels.Add(new Channel
                 {
                     Name = "Back-end",
-                    Description = "Back-end channel",
-                    CreatedBy = "System",
-                    Created = DateAndTime.Now
+                    Description = "Back-end channel"
                 });
 
                 dbContext.Channels.Add(new Channel
                 {
                     Name = "Cats and Dogs",
-                    Description = "Cats and Dogs channel",
-                    CreatedBy = "System",
-                    Created = DateAndTime.Now
+                    Description = "Cats and Dogs channel"
                 });
 
                 dbContext.Channels.Add(new Channel
                 {
                     Name = "Welcome",
-                    Description = "Default channel",
-                    CreatedBy = "System",
-                    Created = DateAndTime.Now
+                    Description = "Default channel"
                 });
 
                 dbContext.SaveChanges();

@@ -7,6 +7,10 @@ namespace ChatGroup.Domain.Entities
     public class ChannelMember
     {
         public int Id { get; set; }
+        public int ChannelId { get; set; }
         public Guid MemberId { get; set; }
+        
+        public Member Member { get; set; }
+
     }
 }
