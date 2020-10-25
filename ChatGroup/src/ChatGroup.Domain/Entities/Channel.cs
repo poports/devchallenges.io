@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ChatGroup.Domain.Entities
 {
-    public class Channel : AuditableEntity
+    public class Channel 
     {
         public int Id { get; set; }
         public string Name { get; set; }

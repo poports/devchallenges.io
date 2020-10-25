@@ -21,10 +21,10 @@ namespace ChatGroup.Application.Api
                     var id = context.GetArgument<int>("id");
                     var result = await contextServiceLocator.Channels.Filter(x => x.Id == id);
                     return result.First();
-                });
+                }).AuthorizeWith("UserPolicy");
 
             FieldAsync<ListGraphType<ChannelType>>("channels",
-                resolve: async context => await contextServiceLocator.Channels.GetAll()).AuthorizeWith("UserPolicy"); ;
+                resolve: async context => await contextServiceLocator.Channels.GetAll());
         }
 
     }
