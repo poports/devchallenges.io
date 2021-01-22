@@ -45,6 +45,7 @@ namespace ChatGroup.Infrastructure.Data
             {
                 query = query.Include(i);
             }
+
             return await query.ToListAsync();
         }
         public async Task<int> SaveChanges() => await _context.SaveChangesAsync();

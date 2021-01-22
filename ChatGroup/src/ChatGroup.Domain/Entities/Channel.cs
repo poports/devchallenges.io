@@ -1,7 +1,4 @@
-﻿using ChatGroup.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ChatGroup.Domain.Entities
 {
@@ -10,8 +7,7 @@ namespace ChatGroup.Domain.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
-        public List<ChannelMember> ChannelMembers { get; set; }
+        public ICollection<Member> Members { get; set; }
 
     }
 }

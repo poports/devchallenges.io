@@ -1,5 +1,6 @@
 ﻿using ChatGroup.Domain.Entities;
 using Microsoft.VisualBasic;
+using System;
 using System.Linq;
 
 namespace ChatGroup.Infrastructure.Data
@@ -41,7 +42,6 @@ namespace ChatGroup.Infrastructure.Data
                 });
 
                 dbContext.SaveChanges();
-
             }
         }
     }

@@ -19,9 +19,10 @@ namespace ChatGroup.Application.Api
                 resolve: async context =>
                 {
                     var id = context.GetArgument<int>("id");
-                    var result = await contextServiceLocator.Channels.Filter(x => x.Id == id);
+                    var result = await contextServiceLocator.Channels
+                        .Filter(x => x.Id == id);
                     return result.First();
-                }).AuthorizeWith("UserPolicy");
+                });//.AuthorizeWith("UserPolicy");
 
             FieldAsync<ListGraphType<ChannelType>>("channels",
                 resolve: async context => await contextServiceLocator.Channels.GetAll());

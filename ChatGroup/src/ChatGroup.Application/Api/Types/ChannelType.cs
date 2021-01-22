@@ -10,6 +10,8 @@ namespace ChatGroup.Application.Api.Types
             Field( t=> t.Id);
             Field(t => t.Name);
             Field(t => t.Description);
+
+            //Field<ListGraphType<ChannelMemberType>>("members", resolve: context => context.Source.ChannelMembers);
         }
     }
 }

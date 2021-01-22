@@ -14,10 +14,13 @@ namespace ChatGroup.Application
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<ContextServiceLocator>();
-            services.AddSingleton<ChannelType>();
             services.AddSingleton<ChannelInputType>();
+            services.AddSingleton<ChannelType>();
+            services.AddSingleton<MemberType>();
+
             services.AddSingleton<ChatGroupQuery>();
             services.AddSingleton<ChatGroupMutation>();
+            
             services.AddSingleton<ISchema, ChatGroupSchema>();
 
             services.AddGraphQLAuth((_, s) =>

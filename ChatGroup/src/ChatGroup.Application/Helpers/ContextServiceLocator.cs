@@ -10,6 +10,9 @@ namespace ChatGroup.Application.Helpers
     public class ContextServiceLocator
     {
         public IRepository<Channel> Channels => _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IRepository<Channel>>();
+        public IRepository<Member> Members => _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IRepository<Member>>();
+        public IRepository<ChannelMember> ChannelMembers => _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IRepository<ChannelMember>>();
+        public IRepository<ChannelChat> ChannelChats => _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IRepository<ChannelChat>>();
 
         //public IHumanizer Humanizer => _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IHumanizer>();
 
